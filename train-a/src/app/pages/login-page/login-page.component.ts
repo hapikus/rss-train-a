@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   FormControl,
   FormGroup,
@@ -12,7 +12,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 // import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzImageModule } from 'ng-zorro-antd/image';
+import { take } from 'rxjs';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-login-page',
@@ -22,31 +23,46 @@ import { NzImageModule } from 'ng-zorro-antd/image';
     NzFormModule,
     NzInputModule,
     NzButtonModule,
-    NzImageModule,
     ReactiveFormsModule,
+    RouterLink,
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
 })
 export class LoginPageComponent {
   private readonly router = inject(Router);
-  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly loginService = inject(LoginService);
+  public errorMessage = '';
 
-  validateForm: FormGroup<{
+  public loginForm: FormGroup<{
     userName: FormControl<string>;
     password: FormControl<string>;
-    remember: FormControl<boolean>;
-  }> = this.fb.group({
+  }> = this.formBuilder.group({
     userName: ['', [Validators.required]],
     password: ['', [Validators.required]],
-    remember: [true],
   });
 
   submitForm(): void {
-    if (this.validateForm.valid) {
-      console.log('submit', this.validateForm.value);
+    if (this.loginForm.valid) {
+      console.log('submit', this.loginForm.value);
+      const userName = this.loginForm.controls.userName.value;
+      const userPassword = this.loginForm.controls.password.value;
+
+      this.loginService
+        .login(userName, userPassword)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/']);
+          },
+          error: (error: Error) => {
+            this.errorMessage = error.message;
+            this.loginForm.controls.userName.setErrors({ serverError: true });
+          },
+        });
     } else {
-      Object.values(this.validateForm.controls).forEach((control) => {
+      Object.values(this.loginForm.controls).forEach((control) => {
         if (control.invalid) {
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });

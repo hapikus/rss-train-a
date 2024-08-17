@@ -1,37 +1,4 @@
-<!-- <form [formGroup]="signInForm" (ngSubmit)="submitForm()">
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="email">Email</nz-form-label>
-    <nz-form-control [nzSpan]="18">
-      <input nz-input formControlName="email" placeholder="Enter your email" />
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-label [nzSpan]="6" nzFor="password">Password</nz-form-label>
-    <nz-form-control [nzSpan]="18">
-      <input
-        nz-input
-        type="password"
-        formControlName="password"
-        placeholder="Enter your password"
-      />
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-control [nzSpan]="24">
-      <button nz-button nzType="primary" [nzLoading]="loading" type="submit">Sign In</button>
-    </nz-form-control>
-  </nz-form-item>
-
-  <nz-form-item>
-    <nz-form-control [nzSpan]="24">
-      <a routerLink="/signup">Sign Up</a>
-    </nz-form-control>
-  </nz-form-item>
-</form> -->
-
-<form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+<form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
   <nz-form-item>
     <nz-form-control nzErrorTip="Please input your username!">
       <nz-input-group nzPrefixIcon="user">
@@ -48,5 +15,5 @@
   </nz-form-item>
   <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
   Or
-  <a>register now!</a>
+  <a routerLink="/signup">register now!</a>
 </form>
