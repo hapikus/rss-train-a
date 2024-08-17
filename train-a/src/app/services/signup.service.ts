@@ -26,17 +26,12 @@ export class SignupService {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Client-side error: ${error.error.message}`;
-    } else {
-      switch (error.status) {
-        case 400:
-          if (error.error) {
-            errorMessage = `Error: ${error.error.message}`;
-          }
-          break;
-        default:
-          errorMessage = `Server-side error: ${error.status}`;
-          break;
-      }
+    }
+    if (error.status) {
+      errorMessage = `Server-side error: ${error.status}`;
+    }
+    if (error.status === 400 && error.error) {
+      errorMessage = `Error: ${error.error.message}`;
     }
     return throwError(() => new Error(errorMessage));
   }

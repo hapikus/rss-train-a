@@ -11,6 +11,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzImageModule } from 'ng-zorro-antd/image';
 
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
@@ -19,13 +20,21 @@ import { SignupService } from '../../services/signup.service';
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule, NzFormModule, NzAlertModule, NzInputModule, NzButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    NzFormModule,
+    NzAlertModule,
+    NzInputModule,
+    NzButtonModule,
+    NzImageModule,
+  ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent {
   public errorMessage = '';
+  public imageUrl = `assets/images/signup-train-${(new Date().getTime() % 3) + 1}.jpg`;
 
   constructor(
     private nnfb: NonNullableFormBuilder,

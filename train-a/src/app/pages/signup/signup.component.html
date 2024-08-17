@@ -33,6 +33,14 @@
     <button nz-button nzType="default">Sign In</button>
   </div>
 </form>
+<div class="image">
+  <img
+    nz-image
+    nzDisablePreview
+    [nzSrc]="imageUrl"
+    alt=""
+  />
+</div>
 
 <ng-template #errorEmail let-control>
   @if (control.errors?.['required']) {
