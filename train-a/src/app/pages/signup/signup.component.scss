@@ -2,6 +2,10 @@
   display: flex;
   width: fit-content;
   margin: 0 auto;
+  
+  background-color: #d6e4ff;
+  padding: 30px;
+  border-radius: 8px;
 }
 
 form {
@@ -21,6 +25,7 @@ nz-form-label,
 nz-form-control {
   width: 100%;
   text-align: start;
+  flex: 1 1 !important;
 }
 
 .register-area {
