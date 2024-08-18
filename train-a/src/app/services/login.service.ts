@@ -18,46 +18,31 @@ export class LoginService {
       tap((response) => {
         localStorage.setItem(this.TOKEN_KEY, response.token);
       }),
-      catchError(this.handleError),
+      catchError((error: HttpErrorResponse) => {
+        const errorMessage = this.getErrorMessage(error);
+
+        return throwError(() => new Error(errorMessage));
+      }),
     );
   }
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = 'An unknown error occurred!';
-
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = `Client-side error: ${error.error.message}`;
+  private getErrorMessage(error: HttpErrorResponse): string {
+    if (error.status === 400 && error.error?.reason) {
+      switch (error.error.reason) {
+        case 'invalidFields':
+          return 'Fields are empty';
+        case 'invalidEmail':
+          return 'Email is wrong';
+        case 'userNotFound':
+          return 'Incorrect email or password';
+        case 'alreadyLoggedIn':
+          return 'Authorization error';
+        default:
+          return 'Incorrect email or password';
+      }
     }
-    if (error.status) {
-      errorMessage = `Server-side error: ${error.status}`;
-    }
-    if (error.status === 400 && error.error) {
-      errorMessage = `Error: ${error.error.message}`;
-    }
-
-    return throwError(() => new Error(errorMessage));
+    return 'An unknown error occurred!';
   }
-
-  // public userCanActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-  //   console.log('login route', route);
-  //   console.log('login state', state);
-
-  //   if (this.isUserLoggedIn()) {
-  //     return true;
-  //   }
-
-  //   this.router.navigate([this.getLoginUrl()]);
-  //   return false;
-  // }
-
-  // private isUserLoggedIn() {
-  //   // return !!localStorage.getItem(this.TOKEN_KEY);
-  //   return true;
-  // }
-
-  // private getLoginUrl() {
-  //   return '/signin';
-  // }
 
   public isAuthenticated(): boolean {
     return !!localStorage.getItem(this.TOKEN_KEY);

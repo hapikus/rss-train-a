@@ -11,9 +11,9 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-// import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { take } from 'rxjs';
 import { LoginService } from '../../services/login.service';
+import { CustomValidators } from '../../../validators/custom-validators';
 
 @Component({
   selector: 'app-login-page',
@@ -39,13 +39,12 @@ export class LoginPageComponent {
     userName: FormControl<string>;
     password: FormControl<string>;
   }> = this.formBuilder.group({
-    userName: ['', [Validators.required]],
-    password: ['', [Validators.required]],
+    userName: ['', [CustomValidators.emailValidation(), Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
   submitForm(): void {
     if (this.loginForm.valid) {
-      console.log('submit', this.loginForm.value);
       const userName = this.loginForm.controls.userName.value;
       const userPassword = this.loginForm.controls.password.value;
 
@@ -58,16 +57,17 @@ export class LoginPageComponent {
           },
           error: (error: Error) => {
             this.errorMessage = error.message;
-            this.loginForm.controls.userName.setErrors({ serverError: true });
+
+            if (error.message.includes('Incorrect email or password')) {
+              this.loginForm.controls.password.setErrors({ userNotFound: true });
+            } else if (error.message.includes('Email is wrong')) {
+              this.loginForm.controls.userName.setErrors({ invalidEmail: true });
+            } else {
+              this.loginForm.controls.userName.setErrors({ serverError: true });
+              this.loginForm.controls.password.setErrors({ serverError: true });
+            }
           },
         });
-    } else {
-      Object.values(this.loginForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
     }
   }
 }
