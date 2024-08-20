@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   FormControl,
@@ -13,7 +13,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { take } from 'rxjs';
 import { LoginService } from '../../services/login.service';
-import { CustomValidators } from '../../../validators/custom-validators';
+import { CustomValidators } from '../../shared/utilities/custom-validators';
 
 @Component({
   selector: 'app-login-page',
@@ -31,10 +31,13 @@ import { CustomValidators } from '../../../validators/custom-validators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent {
-  private readonly router = inject(Router);
-  private readonly formBuilder = inject(NonNullableFormBuilder);
-  private readonly loginService = inject(LoginService);
   public errorMessage = '';
+
+  constructor(
+    private router: Router,
+    private formBuilder: NonNullableFormBuilder,
+    private loginService: LoginService,
+  ) {}
 
   public loginForm: FormGroup<{
     userName: FormControl<string>;
