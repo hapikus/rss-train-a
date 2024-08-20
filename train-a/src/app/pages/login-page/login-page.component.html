@@ -1,0 +1,54 @@
+<form nz-form [formGroup]="loginForm" class="login-form" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-control
+      nzErrorTip="Please input your username!"
+      nzHasFeedback
+      [nzErrorTip]="emailErrorTpl"
+    >
+      <nz-input-group nzPrefixIcon="user">
+        <input type="text" nz-input formControlName="userName" placeholder="Username" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzErrorTip]="passwordErrorTpl">
+      <nz-input-group nzPrefixIcon="lock">
+        <input type="password" nz-input formControlName="password" placeholder="Password" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+  <button
+    nz-button
+    class="login-form-button login-form-margin"
+    [nzType]="'primary'"
+    [disabled]="!loginForm.valid"
+  >
+    Log in
+  </button>
+  Or
+  <a routerLink="/signup">register now!</a>
+</form>
+
+<ng-template #emailErrorTpl let-control>
+  @if (control.errors?.['invalidEmail']) {
+    Incorrect email!
+  }
+  @if (control.errors?.['required']) {
+    Required!
+  }
+  @if (loginForm.controls.userName.hasError('invalidEmail')) {
+    {{ errorMessage }}
+  }
+</ng-template>
+
+<ng-template #passwordErrorTpl let-control>
+  @if (control.errors?.['required']) {
+    Required!
+  }
+  @if (control.errors?.['minlength']) {
+    Password has to be not less 8 symbols!
+  }
+  @if (loginForm.controls.password.hasError('userNotFound')) {
+    {{ errorMessage }}
+  }
+</ng-template>

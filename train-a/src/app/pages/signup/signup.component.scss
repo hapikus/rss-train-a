@@ -1,0 +1,61 @@
+:host {
+  display: flex;
+  column-gap: 20px;
+  width: fit-content;
+  margin: 0 auto;
+  
+  background-color: #d6e4ff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+form {
+  width: 240px;
+
+  @media (max-width: 575px) {
+    width: 340px;
+  }
+}
+
+nz-form-item {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin-bottom: 24px;
+  height: 65px;
+}
+
+nz-form-label,
+nz-form-control {
+  width: 100%;
+  text-align: start;
+  flex: 1 1 !important;
+}
+
+.register-area {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  margin: 0 auto;
+}
+
+.image {
+  height: 300px;
+
+  > img {
+    height: 300px;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 575px) {
+  form {
+    width: 300px;
+  }
+
+  .image {
+    display: none;
+  }
+}

@@ -1,0 +1,57 @@
+<form nz-form [formGroup]="signupForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+    <nz-form-label nzFor="email" nzRequired>E-mail</nz-form-label>
+    <nz-form-control [nzErrorTip]="errorEmail">
+      <input nz-input formControlName="email" id="email" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="password" nzRequired>Password</nz-form-label>
+    <nz-form-control [nzErrorTip]="errorPassword">
+      <input nz-input type="password" formControlName="password" id="password" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
+    <nz-form-control [nzErrorTip]="errorCheckPassword">
+      <input nz-input type="password" formControlName="checkPassword" id="checkPassword" />
+    </nz-form-control>
+  </nz-form-item>
+  <div class="register-area">
+    <button nz-button nzType="primary" [disabled]="!signupForm.valid">Register</button>
+    <button nz-button nzType="default">Sign In</button>
+  </div>
+</form>
+<div class="image">
+  <img nz-image nzDisablePreview [nzSrc]="imageUrl" alt="" />
+</div>
+
+<ng-template #errorEmail let-control>
+  @if (control.errors?.['required']) {
+    Please enter your email!
+  }
+  @if (control.errors?.['email']) {
+    The input is not valid E-mail!
+  }
+  @if (control.errors?.['serverError']) {
+    {{ errorMessage }}
+  }
+</ng-template>
+
+<ng-template #errorPassword let-control>
+  @if (control.errors?.['required']) {
+    Please enter your password!
+  }
+  @if (control.errors?.['minlength']) {
+    Passwort must be at least 8 characters!
+  }
+</ng-template>
+
+<ng-template #errorCheckPassword let-control>
+  @if (control.errors?.['required']) {
+    Please confirm your password!
+  }
+  @if (control.errors?.['confirm']) {
+    Passwords do not match!
+  }
+</ng-template>
