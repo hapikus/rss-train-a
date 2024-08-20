@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   FormControl,
@@ -28,6 +28,7 @@ import { CustomValidators } from '../../../validators/custom-validators';
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent {
   private readonly router = inject(Router);
@@ -43,7 +44,7 @@ export class LoginPageComponent {
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  submitForm(): void {
+  public submitForm(): void {
     if (this.loginForm.valid) {
       const userName = this.loginForm.controls.userName.value;
       const userPassword = this.loginForm.controls.password.value;
@@ -56,18 +57,22 @@ export class LoginPageComponent {
             this.router.navigate(['/']);
           },
           error: (error: Error) => {
-            this.errorMessage = error.message;
-
-            if (error.message.includes('Incorrect email or password')) {
-              this.loginForm.controls.password.setErrors({ userNotFound: true });
-            } else if (error.message.includes('Email is wrong')) {
-              this.loginForm.controls.userName.setErrors({ invalidEmail: true });
-            } else {
-              this.loginForm.controls.userName.setErrors({ serverError: true });
-              this.loginForm.controls.password.setErrors({ serverError: true });
-            }
+            this.handleLoginError(error);
           },
         });
+    }
+  }
+
+  private handleLoginError(error: Error): void {
+    this.errorMessage = error.message;
+
+    if (error.message.includes('Incorrect email or password')) {
+      this.loginForm.controls.password.setErrors({ userNotFound: true });
+    } else if (error.message.includes('Email is wrong')) {
+      this.loginForm.controls.userName.setErrors({ invalidEmail: true });
+    } else {
+      this.loginForm.controls.userName.setErrors({ serverError: true });
+      this.loginForm.controls.password.setErrors({ serverError: true });
     }
   }
 }
