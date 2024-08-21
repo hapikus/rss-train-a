@@ -8,7 +8,6 @@
           placeholder="From"
           nz-input
           [nzAutocomplete]="autoFrom"
-          (input)="onInput($event, 'from')"
         />
         <nz-autocomplete nzBackfill #autoFrom>
           @for(option of (fromOptions$ | async); track option) {
@@ -26,7 +25,6 @@
             placeholder="To"
             nz-input
             [nzAutocomplete]="autoTo"
-            (input)="onInput($event, 'to')"
           />
           <nz-autocomplete nzBackfill #autoTo>
             @for(option of (toOptions$ | async); track option) {
@@ -45,7 +43,7 @@
           formControlName="tripDate"
           class="input_date"
           nzFormat="MMMM dd"
-          [nzDisabledDate]="disabledDate"
+          [nzDisabledDate]="disabledDates"
         ></nz-date-picker>
         </nz-form-control>
       </nz-form-item>

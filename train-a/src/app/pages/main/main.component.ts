@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { debounceTime, distinctUntilChanged, Observable, of, switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 
 import {
   NzFormItemComponent,
@@ -23,9 +23,10 @@ import {
   FormControl,
 } from '@angular/forms';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
-import { differenceInCalendarDays } from 'date-fns';
 import { CityLocation, GeoService } from '../../services/geo.service';
 import { FormUtilsService } from '../../shared/utilities/form-utils-debounce.service';
+import { SearchService } from '../../services/search.service';
+import { Station } from '../../services/stations.service';
 
 @Component({
   selector: 'app-main',
@@ -57,20 +58,29 @@ export class MainComponent {
     toCoords: ['', Validators.required],
   });
 
-  inputValue?: string;
-  options: string[] = [];
-
   fromOptions$: Observable<CityLocation[]>;
 
   toOptions$: Observable<CityLocation[]>;
+
+  closestStationFrom: Station | null = null;
+  closestStationTo: Station | null = null;
 
   constructor(
     private fb: FormBuilder,
     private formUtilsService: FormUtilsService,
     private geoService: GeoService,
+    private searchService: SearchService,
   ) {
-    this.fromOptions$ = this.formUtilsService.searchWithDebounce(this.startCity!);
-    this.toOptions$ = this.formUtilsService.searchWithDebounce(this.endCity!);
+    this.fromOptions$ = this.formUtilsService.createSearchObservable(
+      this.startCity,
+      'fromCoords',
+      this.searchForm,
+    );
+    this.toOptions$ = this.formUtilsService.createSearchObservable(
+      this.endCity,
+      'toCoords',
+      this.searchForm,
+    );
   }
 
   resetForm(): void {
@@ -99,43 +109,77 @@ export class MainComponent {
 
   submitForm() {
     if (this.searchForm.valid) {
-      console.log(this.searchForm.value);
+      const fromCoords = this.searchForm.get('fromCoords')?.value;
+      const toCoords = this.searchForm.get('toCoords')?.value;
+      const tripDate = this.searchForm.get('tripDate')?.value;
+      const date = new Date(tripDate);
+      date.setHours(0, 0, 0, 0);
+   // const unixTime = new Date(date).getTime();
+   // Someday... someday...
+
+      this.geoService.findClosestStation(fromCoords.lat, fromCoords.lon).pipe(
+        switchMap((stationFrom) => {
+          this.closestStationFrom = stationFrom;
+          return this.geoService.findClosestStation(toCoords.lat, toCoords.lon).pipe(
+            switchMap((stationTo) => {
+              this.closestStationTo = stationTo;
+              if (stationFrom && stationTo) {
+                return this.searchService.searchRoutes(
+                  stationFrom.latitude,
+                  stationFrom.longitude,
+                  stationTo.latitude,
+                  stationTo.longitude,
+                  1723669200000,
+                  // this time stamp doesn work correctly, start using it when ...
+                );
+              }
+                throw new Error('Can`t finde stations');
+            }),
+          );
+        }),
+      ).subscribe({
+        next: (response) => {
+          console.log('Response:', response);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+        },
+        complete: () => {
+          console.log('Request completed');
+        },
+      });
     }
+    // THIS WE NEED TO USE WHEN CREATE MANAGER PAHE WITH STATION
+    // if (this.searchForm.valid) {
+    //   const fromCoords = this.searchForm.get('fromCoords')?.value;
+    //   const toCoords = this.searchForm.get('toCoords')?.value;
+    //   const tripDate = this.searchForm.get('tripDate')?.value;
+    //   const unixTime = tripDate ? new Date(tripDate).getTime() : undefined;
+    //   this.searchService
+    //     .searchRoutes(
+    //       fromCoords.lat,
+    //       fromCoords.lon,
+    //       toCoords.lat,
+    //       toCoords.lon,
+    //       unixTime,
+    //     )
+    //     .subscribe({
+    //       next: (response) => {
+    //         console.log('Response:', response);
+    //       },
+    //       error: (error) => {
+    //         console.error('Error:', error);
+    //       },
+    //       complete: () => {
+    //         console.log('Request completed');
+    //       },
+    //     });
+    // }
   }
 
   today = new Date();
 
-  range(start: number, end: number): number[] {
-    const result: number[] = [];
-    for (let i = start; i < end; i + 1) {
-      result.push(i);
-    }
-    return result;
-  }
-
-  disabledDate = (current: Date): boolean => differenceInCalendarDays(current, this.today) < 0;
-
-  onInput(event: Event, type: 'from' | 'to'): void {
-    const { value } = event.target as HTMLInputElement;
-    if (value) {
-      of(value)
-        .pipe(
-          debounceTime(300),
-          distinctUntilChanged(),
-          switchMap((inputValue) => this.geoService.searchCity(inputValue)),
-        )
-        .subscribe((results: CityLocation[]) => {
-          this.options = results.map((result) => result.name);
-          if (results.length > 0) {
-            const coordsControlName = type === 'from' ? 'fromCoords' : 'toCoords';
-            this.searchForm.get(coordsControlName)?.setValue({
-              lat: results[0].lat,
-              lon: results[0].lon,
-            });
-          }
-        });
-    } else {
-      this.options = [];
-    }
+  public disabledDates(date: Date) {
+    return date.getTime() < new Date().getTime();
   }
 }
