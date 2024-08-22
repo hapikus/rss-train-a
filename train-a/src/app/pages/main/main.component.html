@@ -1,1 +1,55 @@
-<p>main works!</p>
+<form nz-form [formGroup]="searchForm" (ngSubmit)="submitForm()" class="ant-advanced-search-form">
+  <div class="form">
+    <div class="form_dest">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please select start stattion">
+          <input
+          formControlName="from"
+          placeholder="From"
+          nz-input
+          [nzAutocomplete]="autoFrom"
+        />
+        <nz-autocomplete nzBackfill #autoFrom>
+          @for(option of (fromOptions$ | async); track option) {
+            <nz-auto-option [nzValue]="option.name">
+              {{ option.name }}
+            </nz-auto-option>
+          }
+        </nz-autocomplete>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please select end station">
+          <input
+            formControlName="to"
+            placeholder="To"
+            nz-input
+            [nzAutocomplete]="autoTo"
+          />
+          <nz-autocomplete nzBackfill #autoTo>
+            @for(option of (toOptions$ | async); track option) {
+              <nz-auto-option [nzValue]="option.name">
+                {{ option.name }}
+              </nz-auto-option>
+            }
+          </nz-autocomplete>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="form_date">
+      <nz-form-item>
+        <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="'asd'">
+          <nz-date-picker
+          formControlName="tripDate"
+          class="input_date"
+          nzFormat="MMMM dd"
+          [nzDisabledDate]="disabledDates"
+        ></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="form_submit">
+          <button nz-button nzType="primary">Submit</button>
+    </div>
+  </div>
+</form>
