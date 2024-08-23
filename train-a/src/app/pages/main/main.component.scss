@@ -1,6 +1,8 @@
 :host {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .ant-advanced-search-form {
@@ -11,6 +13,7 @@
   width: 80%;
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 
 .form {

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CityLocation, GeoService } from '../../services/geo.service';
+import { CityLocation, GeoService } from '../geo.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ import { CityLocation, GeoService } from '../../services/geo.service';
 export class FormUtilsService {
   constructor(private geoService: GeoService) {}
 
-  createSearchObservable(
+  public createSearchObservable(
     inputControl: FormControl,
     coordsControlName: string,
     searchForm: FormGroup,
