@@ -1,10 +1,12 @@
+import { RideStatus } from './types';
+
 export interface Order {
   id: number;
   rideId: number;
   routeId: number;
   seatId: number;
   userId: number;
-  status: 'active' | 'completed' | 'rejected' | 'canceled';
+  status: RideStatus;
   path: number[];
   carriages: string[];
   schedule: {
