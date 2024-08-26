@@ -40,17 +40,19 @@ export class MarkerService {
 
   public toggleMarker(
     station: Station,
-    clickedMarker: Marker,
     fromCoords: Coords,
     toCoords: Coords,
     setFormValue: (field: string, value: string | Coords) => void,
   ) {
-    if (fromCoords && this.isMarkerSelected(station, fromCoords)) {
-      this.resetMarker('from', setFormValue);
-    } else if (toCoords && this.isMarkerSelected(station, toCoords)) {
-      this.resetMarker('to', setFormValue);
-    } else {
-      this.setMarker(station, clickedMarker, setFormValue);
+    const marker = this.markers[station.city];
+    if (marker) {
+      if (fromCoords && this.isMarkerSelected(station, fromCoords)) {
+        this.resetMarker('from', setFormValue);
+      } else if (toCoords && this.isMarkerSelected(station, toCoords)) {
+        this.resetMarker('to', setFormValue);
+      } else {
+        this.setMarker(station, marker, setFormValue);
+      }
     }
   }
 

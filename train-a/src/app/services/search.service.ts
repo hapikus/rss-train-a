@@ -40,6 +40,14 @@ export interface Segment {
   time: Array<string>
 }
 
+export interface Station {
+  id: number;
+  city: string;
+  latitude: number;
+  longitude: number;
+  connectedTo: { id: number; distance: number }[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -55,7 +63,6 @@ export class SearchService {
     toLatitude: number,
     toLongitude: number,
     time?: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Observable<ResponseSearch> {
     let params = new HttpParams()
       .set('fromLatitude', fromLatitude)
@@ -114,12 +121,4 @@ export class SearchService {
     }
     return throwError(() => new Error(errorMessage));
   }
-}
-
-export interface Station {
-  id: number;
-  city: string;
-  latitude: number;
-  longitude: number;
-  connectedTo: { id: number; distance: number }[];
 }

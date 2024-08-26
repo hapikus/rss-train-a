@@ -53,15 +53,22 @@
     </div>
   </div>
   <nz-tabset>
-    <nz-tab *ngFor="let group of groupRoutes" [nzTitle]="group.date">
-      <div *ngFor="let route of group.routes" style="border: solid 1px;">
-        <p>Poezd edet {{ route.startStationId }} -> {{ route.endStationId }}</p>
-        <p>Route ID: {{ route.id }}</p>
-        <p>Ride ID: {{ route.rideId }}</p>
-        <p>Departure Time: {{ route.timeRide | date:'HH:mm:ss' }}</p>
-        <p>From Station: {{ route.city }}</p>
-      </div>
-    </nz-tab>
+    @for(group of groupRoutes; track group ) {
+      <nz-tab [nzTitle]="group.date">
+        @for (route of group.routes; track route) {
+          <div style="border: solid 1px;">
+            <p>Poezd edet {{ route.startStationId }} -> {{ route.endStationId }}</p>
+            <p>Route ID: {{ route.id }}</p>
+            <p>Ride ID: {{ route.rideId }}</p>
+            <p>Departure Time: {{ route.timeStarted | date:'HH:mm:ss' }}</p>
+            <p>From Station: {{ route.cityFrom }}</p>
+            <p>Arrived Time: {{ route.timeArrived | date:'HH:mm:ss' }}</p>
+            <p>To Station: {{ route.cityTo }}</p>
+          </div>
+        }
+      </nz-tab>
+    }
   </nz-tabset>
+  <app-map (markerClicked)="handleMarkerClick($event)"></app-map>
 </form>
-<div class="map" #map id="map" style="width: 100%; height: 532.2px;"></div>
+
