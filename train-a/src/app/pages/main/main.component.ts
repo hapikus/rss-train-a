@@ -29,7 +29,13 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { CityLocation, GeoService } from '../../services/geo.service';
 import { FormUtilsService } from '../../services/utils/form-utils-debounce.service';
-import { ResponseSearch, Route, Schedule, SearchService, Station } from '../../services/search.service';
+import {
+  ResponseSearch,
+  Route,
+  Schedule,
+  SearchService,
+  Station,
+} from '../../services/search.service';
 import { Coords, MarkerService } from '../../services/marker.service';
 import { MapComponent } from '../../shared/components/map/map.component';
 
@@ -53,7 +59,7 @@ import { MapComponent } from '../../shared/components/map/map.component';
     NzTabsModule,
     LeafletModule,
     MapComponent,
-],
+  ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   providers: [DatePipe],
@@ -97,12 +103,7 @@ export class MainComponent {
     const fromCoords = this.searchForm.get('fromCoords')?.value;
     const toCoords = this.searchForm.get('toCoords')?.value;
 
-    this.markerService.toggleMarker(
-      station,
-      fromCoords,
-      toCoords,
-      this.setFormValue.bind(this),
-    );
+    this.markerService.toggleMarker(station, fromCoords, toCoords, this.setFormValue.bind(this));
   }
 
   public setFormValue(field: string, value: string | Coords) {
@@ -183,7 +184,7 @@ export class MainComponent {
   getRoute(response: ResponseSearch): GroupTabs[] {
     const { stationId: stationIdFrom, city: cityFrom } = response.from;
     const { stationId: stationIdTo, city: cityTo } = response.to;
-    const groupRoutes: { date: string; routes:TabRoutes[] }[] = [];
+    const groupRoutes: { date: string; routes: TabRoutes[] }[] = [];
 
     response.routes.forEach((route: Route, routeIndex: number) => {
       const { path, id, schedule } = route;
@@ -200,8 +201,14 @@ export class MainComponent {
           if (segmentFrom && segmentTo) {
             const [timeStarted] = segmentFrom.time;
             const [timeArrived] = segmentTo.time;
-            const formatDateStarted = this.datePipe.transform(new Date(timeStarted), 'EEE, MMMM dd');
-            const fromatDateArrived = this.datePipe.transform(new Date(timeArrived), 'EEE, MMMM dd');
+            const formatDateStarted = this.datePipe.transform(
+              new Date(timeStarted),
+              'EEE, MMMM dd',
+            );
+            const fromatDateArrived = this.datePipe.transform(
+              new Date(timeArrived),
+              'EEE, MMMM dd',
+            );
 
             if (formatDateStarted && fromatDateArrived) {
               let dateGroup = groupRoutes.find((group) => group.date === formatDateStarted);
@@ -235,7 +242,7 @@ export class MainComponent {
 
     this.groupRoutes = groupRoutes;
     return groupRoutes;
-}
+  }
 
   public disabledDates(date: Date) {
     const today = new Date();
@@ -245,23 +252,23 @@ export class MainComponent {
 }
 
 export interface GroupTabs {
-  date: string,
-  routes: TabRoutes[],
+  date: string;
+  routes: TabRoutes[];
 }
 export interface TabRoutes {
-  rideId: number,
-  routeIndex: number,
-  id: number,
-  indexFrom: number,
-  route: Route,
-  timeStarted: string,
-  timeArrived: string,
-  departureTime: string,
-  arrivedTime: string,
-  stationIdFrom: number,
-  cityFrom: string,
-  stationIdTo?: number,
-  cityTo?: string,
-  startStationId: number,
-  endStationId: number,
+  rideId: number;
+  routeIndex: number;
+  id: number;
+  indexFrom: number;
+  route: Route;
+  timeStarted: string;
+  timeArrived: string;
+  departureTime: string;
+  arrivedTime: string;
+  stationIdFrom: number;
+  cityFrom: string;
+  stationIdTo?: number;
+  cityTo?: string;
+  startStationId: number;
+  endStationId: number;
 }
