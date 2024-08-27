@@ -12,6 +12,20 @@ const nullUser: Profile = {
   role: '',
 };
 
+export interface RouteResponse {
+  id: number;
+  carriages: string[];
+  path: number[];
+}
+
+export interface StationResponse {
+  id: number;
+  city: string;
+  latitude: number;
+  longitude: number;
+  connectedTo: { id: number; distance: number }[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -19,6 +33,8 @@ export class ApiService {
   private readonly apiProfileUrl = '/api/profile';
   private readonly apiLogoutUrl = '/api/logout';
   private readonly apiPasswordUrl = '/api/profile/password';
+  private readonly apiRoutesUrl = '/api/route';
+  private readonly apiStationsUrl = '/api/station';
   private readonly TOKEN_KEY = 'token';
   public profile = signal(nullUser);
   public name = signal('');
@@ -105,7 +121,8 @@ export class ApiService {
       });
       if (response.ok) {
         return true;
-      } if (response.status === 401) {
+      }
+      if (response.status === 401) {
         throw new Error('401, Wrong token identifier');
       } else if (response.status === 400) {
         throw new Error('400, Invalid password');
@@ -114,6 +131,60 @@ export class ApiService {
       }
     } catch (error) {
       console.error('update password', error);
+      return false;
+    }
+  }
+
+  public async fetchStations() {
+    try {
+      const response = await fetch(this.apiStationsUrl, {
+        method: 'GET',
+      });
+      if (response.ok) {
+        const stations: StationResponse[] = await response.json();
+        return stations;
+      }
+      throw new Error(response.status.toString());
+    } catch (error) {
+      console.error('fetch routes', error);
+      return [];
+    }
+  }
+
+  public async fetchRoutes() {
+    try {
+      const response = await fetch(this.apiRoutesUrl, {
+        method: 'GET',
+      });
+      if (response.ok) {
+        const routes: RouteResponse[] = await response.json();
+        return routes;
+      }
+      throw new Error(response.status.toString());
+    } catch (error) {
+      console.error('fetch routes', error);
+      return [];
+    }
+  }
+
+  public async deleteRoute(id: number) {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (!token) return false;
+    try {
+      const response = await fetch(`${this.apiRoutesUrl}/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        return true;
+      }
+      if (response.status === 401) {
+        throw new Error('401, Wrong token identifier');
+      } else {
+        throw new Error(response.status.toString());
+      }
+    } catch (error) {
+      console.error('delete route', error);
       return false;
     }
   }

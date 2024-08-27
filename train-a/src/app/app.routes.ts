@@ -28,6 +28,6 @@ export const routes: Routes = [
         (m) => m.RoutesComponent,
       ),
     title: 'Routes',
-    canActivate: [adminGuard],
+    // canActivate: [adminGuard],
   },
 ];
