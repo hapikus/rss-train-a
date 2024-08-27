@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Station, StationService } from './stations.service';
+import { SearchService, Station } from './search.service';
 
 export interface CityLocation {
   name: string;
@@ -16,9 +16,9 @@ export interface CityLocation {
 export class GeoService {
   private apiUrl = 'https://nominatim.openstreetmap.org/search';
 
-  constructor(private http: HttpClient, private stationService: StationService) {}
+  constructor(private http: HttpClient, private searchService: SearchService) {}
 
-  searchCity(city: string): Observable<CityLocation[]> {
+  public searchCity(city: string): Observable<CityLocation[]> {
     const params = {
       q: city,
       format: 'json',
@@ -34,7 +34,7 @@ export class GeoService {
       );
     }
 
-    findClosestStation(lat: string, lon: string): Observable<Station | null> {
-      return this.stationService.findClosestStation(parseFloat(lat), parseFloat(lon));
+  public findClosestStation(lat: string, lon: string): Observable<Station | null> {
+      return this.searchService.findClosestStation(parseFloat(lat), parseFloat(lon));
     }
 }

@@ -52,4 +52,23 @@
           <button nz-button nzType="primary">Submit</button>
     </div>
   </div>
+  <nz-tabset>
+    @for(group of groupRoutes; track group ) {
+      <nz-tab [nzTitle]="group.date">
+        @for (route of group.routes; track route) {
+          <div style="border: solid 1px;">
+            <p>Poezd edet {{ route.startStationId }} -> {{ route.endStationId }}</p>
+            <p>Route ID: {{ route.id }}</p>
+            <p>Ride ID: {{ route.rideId }}</p>
+            <p>Departure Time: {{ route.timeStarted | date:'HH:mm:ss' }}</p>
+            <p>From Station: {{ route.cityFrom }}</p>
+            <p>Arrived Time: {{ route.timeArrived | date:'HH:mm:ss' }}</p>
+            <p>To Station: {{ route.cityTo }}</p>
+          </div>
+        }
+      </nz-tab>
+    }
+  </nz-tabset>
+  <app-map (markerClicked)="handleMarkerClick($event)"></app-map>
 </form>
+
