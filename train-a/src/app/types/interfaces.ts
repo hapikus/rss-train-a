@@ -27,3 +27,11 @@ export interface Order {
   // priceTotal: number;
   // ownerName?: string;
 }
+
+export interface Carriage {
+  code?: string;
+  name: string;
+  rows: number;
+  leftSeats: number;
+  rightSeats: number;
+}

@@ -1,0 +1,35 @@
+<button nz-button (click)="onCreate()">Create</button>
+@for (carriage of carriages; track $index) {
+  <div>{{ carriage.name }}</div>
+  <button nz-button (click)="onEdit(carriage)">Update</button>
+  <app-carriage-prototype [carriage]="carriage"></app-carriage-prototype>
+}
+
+<nz-modal
+  [(nzVisible)]="isModalVisible"
+  nzTitle="Carriage Form"
+  (nzOnCancel)="onCancel()"
+  (nzOnOk)="onSave()"
+>
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Rows</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="carriageForm.rows" name="rows" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Left Seats</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="carriageForm.leftSeats" name="leftSeats" />
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Right Seats</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="carriageForm.rightSeats" name="rightSeats" />
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+  <app-carriage-prototype [carriage]="carriageForm"></app-carriage-prototype>
+</nz-modal>

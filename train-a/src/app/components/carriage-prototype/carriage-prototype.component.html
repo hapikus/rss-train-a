@@ -1,0 +1,15 @@
+<div class="carriage">
+  @for (row of [].constructor(carriage.rows); track $index) {
+    <div>
+      @for (seat of [].constructor(carriage.leftSeats); track $index) {
+        <span>L</span>
+      }
+
+      <span>|</span>
+
+      @for (seat of [].constructor(carriage.rightSeats); track $index) {
+        <span>R</span>
+      }
+    </div>
+  }
+</div>
