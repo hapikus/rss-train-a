@@ -1,15 +1,18 @@
 <div class="carriage">
-  @for (row of [].constructor(carriage.rows); track $index) {
-    <div>
-      @for (seat of [].constructor(carriage.leftSeats); track $index) {
-        <span>L</span>
-      }
+  @for (item of rowsArray; track $index; let i = $index) {
+    <div class="row">
+      <div class="left-seats">
+        @for (seatIndex of leftSeatsArray; track $index; let seatNum = $index) {
+          <div class="seat">{{ getSeatNumber(i, seatNum) }}</div>
+        }
+      </div>
+      <div class="aisle">Aisle</div>
 
-      <span>|</span>
-
-      @for (seat of [].constructor(carriage.rightSeats); track $index) {
-        <span>R</span>
-      }
+      <div class="right-seats">
+        @for (seatIndex of rightSeatsArray; track $index; let seatNum = $index) {
+          <div class="seat">{{ getSeatNumber(i, carriage.leftSeats + seatNum) }}</div>
+        }
+      </div>
     </div>
   }
 </div>

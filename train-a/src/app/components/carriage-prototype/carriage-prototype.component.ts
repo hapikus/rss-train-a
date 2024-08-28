@@ -11,4 +11,21 @@ import { Carriage } from '../../types/interfaces';
 })
 export class CarriagePrototypeComponent {
   @Input() carriage!: Carriage;
+
+  public getSeatNumber(rowIndex: number, seatIndex: number): number {
+    const seatsPerRow = this.carriage.leftSeats + this.carriage.rightSeats;
+    return rowIndex * seatsPerRow + seatIndex + 1;
+  }
+
+  get rowsArray(): number[] {
+    return Array.from({ length: this.carriage.rows }, (_, i) => i);
+  }
+
+  get leftSeatsArray(): number[] {
+    return Array.from({ length: this.carriage.leftSeats }, (_, i) => i);
+  }
+
+  get rightSeatsArray(): number[] {
+    return Array.from({ length: this.carriage.rightSeats }, (_, i) => i);
+  }
 }
