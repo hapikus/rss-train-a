@@ -1,8 +1,19 @@
 <button nz-button (click)="onCreate()">Create</button>
+
 @for (carriage of carriages; track $index) {
   <div>{{ carriage.name }}</div>
   <button nz-button (click)="onEdit(carriage)">Update</button>
-  <app-carriage-prototype [carriage]="carriage"></app-carriage-prototype>
+
+  <nz-collapse>
+    <nz-collapse-panel
+      [nzHeader]="isCollapsed ? 'Show Seat Map' : 'Hide Seat Map'"
+      [nzShowArrow]="false"
+      [nzActive]="!isCollapsed"
+      (nzActiveChange)="toggleCollapse(isCollapsed)"
+    >
+      <app-carriage-prototype [carriage]="carriage"></app-carriage-prototype>
+    </nz-collapse-panel>
+  </nz-collapse>
 }
 
 <nz-modal
@@ -12,9 +23,6 @@
   (nzOnOk)="onSave()"
 >
   <ng-container *nzModalContent>
-    <!-- <p>Content one</p>
-  <p>Content two</p>
-  <p>Content three</p> -->
     <form nz-form>
       <nz-form-item>
         <nz-form-label [nzSpan]="6">Rows</nz-form-label>

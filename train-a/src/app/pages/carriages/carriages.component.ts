@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { Carriage } from '../../types/interfaces';
 import { CarriageService } from '../../services/carriage.service';
 import { CarriagePrototypeComponent } from '../../components/carriage-prototype/carriage-prototype.component';
@@ -15,6 +16,7 @@ import { CarriagePrototypeComponent } from '../../components/carriage-prototype/
     NzButtonModule,
     NzModalModule,
     NzFormModule,
+    NzCollapseModule,
     FormsModule,
     ReactiveFormsModule,
   ],
@@ -26,6 +28,7 @@ export class CarriagesComponent implements OnInit {
   carriages: Carriage[] = [];
   carriageForm: Carriage = { name: '', rows: 16, leftSeats: 2, rightSeats: 3 };
   isModalVisible = false;
+  isCollapsed = true;
 
   constructor(private carriageService: CarriageService) {}
 
@@ -62,5 +65,9 @@ export class CarriagesComponent implements OnInit {
 
   public onCancel(): void {
     this.isModalVisible = false;
+  }
+
+  public toggleCollapse(isOpen: boolean): void {
+    this.isCollapsed = !isOpen;
   }
 }

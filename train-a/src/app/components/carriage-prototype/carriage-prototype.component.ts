@@ -14,6 +14,7 @@ export class CarriagePrototypeComponent {
 
   public getSeatNumber(rowIndex: number, seatIndex: number): number {
     const seatsPerRow = this.carriage.leftSeats + this.carriage.rightSeats;
+
     return rowIndex * seatsPerRow + seatIndex + 1;
   }
 
