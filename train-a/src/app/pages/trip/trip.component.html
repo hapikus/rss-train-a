@@ -1,0 +1,13 @@
+<p>{{ getStationName(trip?.path?.[0] ?? 1) }}</p>
+<p>{{ getStationName(trip?.path?.at(-1) ?? 1) }}</p>
+<p>{{ trip?.schedule?.segments?.[0]?.time?.[0] | date : "medium"}} </p>
+
+<button nz-button nzType="dashed" (click)="toggleShowModal()">Route</button>
+
+@if (trip && stations) {
+  <app-route-modal
+    [trip]="trip"
+    [showModal]="showModal"
+    (toggleShowModal)="toggleShowModal()"
+  />
+}

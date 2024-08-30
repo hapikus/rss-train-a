@@ -1,0 +1,20 @@
+<nz-modal
+  [(nzVisible)]="showModal"
+  nzTitle="Route"
+  (nzOnCancel)="closeModal()"
+  [nzFooter]="null"
+>
+  <ng-container *nzModalContent>
+    <nz-timeline nzMode="right">
+      @for (data of modalData; track data.stationName; let i = $index) {
+        <nz-timeline-item [nzLabel]="data.stationName">
+          <div [ngClass]="{'two-dates': $index !== 0 && $index !== modalData.length - 1}">
+            @for (time of data.times; track $index) {
+              <p>{{ time | date : "medium"}} </p>
+            }
+          </div>
+        </nz-timeline-item>
+      }
+    </nz-timeline>
+  </ng-container>
+</nz-modal>
