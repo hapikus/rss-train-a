@@ -5,9 +5,22 @@
   [nzFooter]="null"
 >
   <ng-container *nzModalContent>
+    <div class="title"> 
+      <h5 nz-typography class="title-time">Time</h5>
+      <h5 nz-typography class="title-station">Station</h5>
+      <h5 nz-typography class="title-stop">Stop</h5>
+    </div>
     <nz-timeline nzMode="right">
       @for (data of modalData; track data.stationName; let i = $index) {
-        <nz-timeline-item [nzLabel]="data.stationName">
+
+        <ng-template #labelTemplate>
+          <div class="label">
+            <span>{{ data.stationName }}</span>
+            <span>{{ data.duration | durations}}</span>
+          </div>
+        </ng-template>
+
+        <nz-timeline-item [nzColor]="data.color" [nzLabel]="labelTemplate">
           <div [ngClass]="{'two-dates': $index !== 0 && $index !== modalData.length - 1}">
             @for (time of data.times; track $index) {
               <p>{{ time | date : "medium"}} </p>

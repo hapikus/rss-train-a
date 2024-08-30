@@ -1,3 +1,31 @@
 .two-dates {
   transform: translateY(-11px);
 }
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 40px;
+}
+
+.title {
+  display: flex;
+  width: 100%;
+  margin-bottom: 15px;
+
+  > h5 {
+    margin-top: 0;
+  }
+
+  &-time {
+    margin: 0 0 0 130px;
+  }
+
+  &-station {
+    margin: 0 0 0 85px;
+  }
+
+  &-stop {
+    margin: 0 0 0 135px;
+  }
+}
