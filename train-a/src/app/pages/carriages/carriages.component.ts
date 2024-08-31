@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { Carriage } from '../../types/interfaces';
 import { CarriageService } from '../../services/carriage.service';
 import { CarriagePrototypeComponent } from '../../components/carriage-prototype/carriage-prototype.component';
@@ -17,15 +20,17 @@ import { CarriagePrototypeComponent } from '../../components/carriage-prototype/
     NzModalModule,
     NzFormModule,
     NzCollapseModule,
+    NzDividerModule,
     FormsModule,
     ReactiveFormsModule,
+    AsyncPipe,
   ],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CarriagesComponent implements OnInit {
-  carriages: Carriage[] = [];
+  public carriages = toSignal(this.carriageService.carriages$, { initialValue: [] });
   carriageForm: Carriage = { name: '', rows: 16, leftSeats: 2, rightSeats: 3 };
   isModalVisible = false;
   isCollapsed = true;
@@ -36,9 +41,9 @@ export class CarriagesComponent implements OnInit {
     this.loadCarriages();
   }
 
-  private loadCarriages(): void {
-    this.carriageService.getCarriages().subscribe((data) => {
-      this.carriages = data;
+  public loadCarriages(): void {
+    this.carriageService.getCarriages().subscribe((carriages) => {
+      this.carriageService.setCarriages(carriages);
     });
   }
 
@@ -53,13 +58,14 @@ export class CarriagesComponent implements OnInit {
   }
 
   public onSave(): void {
-    if (this.carriageForm.code) {
-      this.carriageService
-        .updateCarriage(this.carriageForm.code, this.carriageForm)
-        .subscribe(() => this.loadCarriages());
-    } else {
-      this.carriageService.createCarriage(this.carriageForm).subscribe(() => this.loadCarriages());
-    }
+    // if (this.carriageForm.code) {
+    //   this.carriageService
+    //     .updateCarriage(this.carriageForm.code, this.carriageForm)
+    //     .subscribe(() => this.loadCarriages());
+    // } else {
+    //   this.carriageService.createCarriage(this.carriageForm)
+    // .subscribe(() => this.loadCarriages());
+    // }
     this.isModalVisible = false;
   }
 

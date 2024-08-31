@@ -1,0 +1,12 @@
+.carriages-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.seat-map-collapse {
+  align-self: normal;
+  background-color: #ececec;
+  text-align: center;
+}
