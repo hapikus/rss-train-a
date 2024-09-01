@@ -81,10 +81,6 @@
   overflow: visible;
 }
 
-// button {
-//   margin-left: 8px;
-// }
-
 .collapse {
   margin-left: 8px;
   font-size: 12px;
@@ -92,4 +88,11 @@
 
 .search-area {
   text-align: right;
+}
+
+
+@media screen and (max-width: 1024px) {
+  .ant-advanced-search-form {
+    width: 100%;
+  }
 }
