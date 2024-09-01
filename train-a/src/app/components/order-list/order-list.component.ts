@@ -4,7 +4,9 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { Order } from '../../types/interfaces';
 import { OrderService } from '../../services/order.service';
@@ -14,7 +16,15 @@ import { RideStatus } from '../../types/types';
 @Component({
   selector: 'app-order-list',
   standalone: true,
-  imports: [NzCardModule, NzPaginationModule, NzDividerModule, NzButtonModule, CommonModule],
+  imports: [
+    NzCardModule,
+    NzPaginationModule,
+    NzDividerModule,
+    NzButtonModule,
+    NzStepsModule,
+    NzBadgeModule,
+    CommonModule,
+  ],
   templateUrl: './order-list.component.html',
   styleUrl: './order-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,19 +38,19 @@ export class OrderListComponent implements OnInit {
     private message: NzMessageService,
     private modal: NzModalService,
   ) {
-    const ref: NzModalRef = modal.info();
-    ref.close();
+    // const ref: NzModalRef = modal.info();
+    // ref.close();
   }
 
   // ngOnInit(): void {
   //   this.fetchOrders();
   // }
 
-  // private fetchOrders(): void {
-  //   this.orderService.getOrders(true).subscribe({
-  //     next: (orders) => console.log(orders),
-  //   });
-  // }
+  private fetchOrders(): void {
+    this.orderService.getOrders(true).subscribe({
+      next: (orders) => console.log('orders', orders),
+    });
+  }
 
   // public orders = mockOrders;
   // public pageIndex = 1;
@@ -60,6 +70,7 @@ export class OrderListComponent implements OnInit {
 
   ngOnInit(): void {
     // this.updatePagination();
+    // this.fetchOrders();
     this.sortedOrders = this.orders.sort(
       (a, b) =>
         new Date(a.schedule.segments[0].departure).getTime() -

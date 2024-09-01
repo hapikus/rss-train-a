@@ -1,68 +1,58 @@
-<!-- <nz-table
-  #basicTable
-  [nzData]="sortedOrders"
-  [nzFrontPagination]="false"
-  [nzPageSize]="5"
-  [nzShowPagination]="true"
-  [(nzPageIndex)]="pageIndex"
-  [nzTotal]="totalOrders"
-  nzShowSizeChanger
->
-  <thead>
-    <tr>
-      <th>Start Station</th>
-      <th>Start Trip Time</th>
-      <th>End Station</th>
-      <th>End Trip Time</th>
-      <th>Trip Duration</th>
-      <th>Carriage Type</th>
-      <th>Car Number</th>
-      <th>Seat Number</th>
-      <th>Price</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (order of paginatedOrders; track $index) {
-      <tr>
-        <td>{{ getStationName(order.path[0]) }}</td>
-        <td>{{ getTripStartTime(order) | date: 'MMMM dd hh:mm' }}</td>
-        <td>{{ getStationName(order.path[order.path.length - 1]) }}</td>
-        <td>{{ getTripEndTime(order) | date: 'MMMM dd hh:mm' }}</td>
-        <td>{{ getTripDuration(order) }}</td>
-        <td>{{ order.carriages[0] }}</td>
-        <td>{{ order.seatId }}</td>
-        <td>{{ order.seatId }}</td>
-        <td>{{ order.price[order.carriages[0]] | currency }}</td>
-      </tr>
-    }
-  </tbody>
-</nz-table> -->
 <div class="orders-list">
   @for (order of sortedOrders; track $index) {
-    <nz-card nzBordered class="order-card">
+    <nz-card nzHoverable [nzBodyStyle]="{ padding: '0px' }" class="order-card">
       <div class="order-header">
-        <h3>{{ order.status | titlecase }} Order</h3>
-        <h4>
-          {{ order.schedule.segments[0].departure | date: 'MMMM dd, HH:mm' }} -
-          {{
-            order.schedule.segments[order.schedule.segments.length - 1].arrival
-              | date: 'MMMM dd, HH:mm'
-          }}
-        </h4>
-        <p>Carriage type: {{ getCarriageType(order) }}</p>
-        <p>Price: {{ getTotalPrice(order) | currency }}</p>
+        <p><strong>Carriage type:</strong> {{ getCarriageType(order) }}</p>
+        <p><strong>Price:</strong> {{ getTotalPrice(order) | currency }}</p>
+        <p><strong>Car number:</strong></p>
+        <p><strong>Seat number:</strong> {{ order.seatId }}</p>
       </div>
 
       <nz-divider></nz-divider>
 
-      <div class="trip-details">
+      <!-- <div class="trip-details">
         <p><strong>Start station:</strong> Station {{ order.path[0] }}</p>
         <p><strong>End station:</strong> Station {{ order.path[order.path.length - 1] }}</p>
         <p><strong>Seat number:</strong> {{ order.seatId }}</p>
         <p><strong>Trip duration:</strong> {{ getTripDuration(order) }}</p>
-      </div>
+      </div> -->
+      <nz-steps [nzCurrent]="3" nzSize="small">
+        <nz-step [nzTitle]="nzFrom" [nzIcon]="custom1"></nz-step>
+        <nz-step [nzTitle]="nzDur" [nzIcon]="custom1"></nz-step>
+        <nz-step [nzTitle]="nzTo" [nzIcon]="custom1"></nz-step>
+        <ng-template #nzFrom>
+          <div>
+            <div class="card__time">
+              {{ order.schedule.segments[0].departure | date: 'HH:mm' }}
+            </div>
+            <div class="card__time__date">
+              {{ order.schedule.segments[0].departure | date: 'MMMM dd' }}
+            </div>
+            <div class="card__time__city">City {{ order.path[0] }}</div>
+          </div>
+        </ng-template>
+        <ng-template #nzDur>
+          <div class="card__duration">{{ getTripDuration(order) }}</div>
+        </ng-template>
+        <ng-template #nzTo>
+          <div class="card__time">
+            {{
+              order.schedule.segments[order.schedule.segments.length - 1].arrival | date: 'HH:mm'
+            }}
+          </div>
+          <div class="card__time__date">
+            {{
+              order.schedule.segments[order.schedule.segments.length - 1].arrival | date: 'MMMM dd'
+            }}
+          </div>
+          <div class="card__city">City {{ order.path[order.path.length - 1] }}</div>
+        </ng-template>
+        <ng-template #custom1 style="display: none"> </ng-template>
+      </nz-steps>
       @if (order.status === 'active') {
-        <button nz-button nzType="primary" (click)="onCancelOrder(order)">Cancel</button>
+        <button nz-button nzType="primary" (click)="onCancelOrder(order)" class="cancel-btn">
+          Cancel
+        </button>
       }
     </nz-card>
   }
