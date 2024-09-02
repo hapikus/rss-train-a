@@ -8,21 +8,25 @@
               <div class="card">
                 <div class="left-container">
                 <nz-steps [nzCurrent]="3" nzSize="small">
-                  <nz-step [nzTitle]="nzFrom" [nzIcon]="custom1"></nz-step>
+                  <nz-step [nzTitle]="nzFrom" [nzIcon]="custom1">
+                  </nz-step>
                   <nz-step [nzTitle]="nzDur" [nzIcon]="custom1"></nz-step>
                   <nz-step [nzTitle]="nzTo" [nzIcon]="custom1"></nz-step>
                   <ng-template #nzFrom>
-                    <div>
-                      <div class="card__time">{{ route.timeStarted | date: 'HH:mm' }}</div>
+                      <div class="card__time">
+                        <p>{{ route.timeStarted | date: 'HH:mm' }}</p>
+                        <span nz-icon nzType="environment" nzTheme="outline"></span>
+                      </div>
                       <div class="card__time__date">{{ route.timeStarted | date: 'MMMM dd' }}</div>
                       <div class="card__time__city">{{ route.cityFrom }}</div>
-                    </div>
                   </ng-template>
                   <ng-template #nzDur>
                     <div class="card__duration">{{ route.duration }}</div>
                   </ng-template>
                   <ng-template #nzTo>
-                    <div class="card__time">{{ route.timeArrived | date: 'HH:mm' }}</div>
+                    <div class="card__time">
+                      <span nz-icon nzType="environment" nzTheme="fill"></span>
+                      {{ route.timeArrived | date: 'HH:mm' }}</div>
                     <div class="card__time__date">{{ route.timeArrived | date: 'MMMM dd' }}</div>
                     <div class="card__city">{{ route.cityTo }}</div>
                   </ng-template>
@@ -55,21 +59,6 @@
                 </div>
               </div>
             </nz-card>
-            <!-- <ng-template #coverTemplate>
-            </ng-template>
-            <p>Poezd edet {{ route.startStationId }} -> {{ route.endStationId }}</p>
-            <p>Route ID: {{ route.id }}</p>
-            <p>Ride ID: {{ route.rideId }}</p>
-            <p>Departure Time: {{ route.timeStarted | date:'MMMM dd HH:mm' }}</p>
-            <p>From Station: {{ route.cityFrom }}</p>
-            <p>Arrived Time: {{ route.timeArrived | date:'MMMM dd HH:mm' }}</p>
-            <p>To Station: {{ route.cityTo }}</p>
-            <p> DURATIIOn : {{ route.duration }} </p>
-            <ul>
-              <li *ngFor="let carriage of getCarriageKeys(route.carriages)">
-                {{ carriage }}: {{ route.carriages[carriage] | currency }}
-              </li>
-            </ul> -->
         }
       </div>
       </nz-tab>

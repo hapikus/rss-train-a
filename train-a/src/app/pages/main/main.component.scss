@@ -24,10 +24,32 @@
 }
 
 .form_dest {
+  position: relative;
   display: flex;
-    flex: 0 0 50%;
-    max-width: 50%;
-    flex-direction: row;
+  flex: 0 0 50%;
+  max-width: 50%;
+  flex-direction: row;
+  column-gap: 10px;
+}
+
+.icon-swap {
+  min-width: 30px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #e9e9e9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 12px);
+  transform: translateY(-50%);
+  z-index: 999;
+  margin: 0 auto;
+  background-color: rgb(255 255 255 / 54%);
+  backdrop-filter: blur(1px);
 }
 
 .form_date {
@@ -90,9 +112,41 @@
   text-align: right;
 }
 
-
 @media screen and (max-width: 1024px) {
   .ant-advanced-search-form {
     width: 100%;
+  }
+
+  .form {
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 20px;
+  }
+
+  .form_dest {
+    max-width: 100%;
+  }
+
+  .ant-btn-primary {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .form_dest {
+    flex-direction: column;
+  }
+
+  .ant-form-item {
+    display: flex;
+  }
+
+  .icon-swap {
+    top: calc(50% - 12px);
+    transform: translateX(-50%);
+    left: 90%;
+    rotate: 90deg;
+    width: 38px;
+    height: 38px;
   }
 }

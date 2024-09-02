@@ -24,6 +24,7 @@ import { NzInputGroupComponent, NzInputModule } from 'ng-zorro-antd/input';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
@@ -52,6 +53,7 @@ import { RouteTabsComponent } from '../../shared/components/route-tabs/route-tab
     NzDatePickerModule,
     NzAutocompleteModule,
     NzTabsModule,
+    NzIconModule,
     LeafletModule,
     MapComponent,
     RouteTabsComponent,

@@ -3,7 +3,9 @@
     <div class="form_dest">
       <nz-form-item>
         <nz-form-control nzErrorTip="Please select start stattion">
-          <input formControlName="from" placeholder="From" nz-input [nzAutocomplete]="autoFrom" />
+          <nz-input-group [nzPrefix]="from">
+            <input formControlName="from" placeholder="From" nz-input [nzAutocomplete]="autoFrom" />
+          </nz-input-group>
           <nz-autocomplete nzBackfill #autoFrom>
             @for(option of (fromOptions$ | async); track option) {
             <nz-auto-option [nzValue]="option.name">
@@ -13,9 +15,14 @@
           </nz-autocomplete>
         </nz-form-control>
       </nz-form-item>
+      <div class="icon-swap">
+        <span nz-icon nzType="swap" nzTheme="outline"></span>
+      </div>
       <nz-form-item>
         <nz-form-control nzErrorTip="Please select end station">
-          <input formControlName="to" placeholder="To" nz-input [nzAutocomplete]="autoTo" />
+          <nz-input-group [nzPrefix]="to">
+            <input formControlName="to" placeholder="To" nz-input [nzAutocomplete]="autoTo" />
+          </nz-input-group>
           <nz-autocomplete nzBackfill #autoTo>
             @for(option of (toOptions$ | async); track option) {
             <nz-auto-option [nzValue]="option.name">
@@ -25,10 +32,16 @@
           </nz-autocomplete>
         </nz-form-control>
       </nz-form-item>
+      <ng-template #from>
+        <span nz-icon nzType="environment" nzTheme="outline"></span>
+      </ng-template>
+      <ng-template #to>
+        <span nz-icon nzType="environment" nzTheme="fill"></span>
+      </ng-template>
     </div>
     <div class="form_date">
       <nz-form-item>
-        <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="'asd'">
+        <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="'Please select date'">
           <nz-date-picker formControlName="tripDate" class="input_date" nzFormat="MMMM dd"
             [nzDisabledDate]="disabledDates"></nz-date-picker>
         </nz-form-control>
@@ -38,16 +51,6 @@
       <button nz-button nzType="primary">Submit</button>
     </div>
   </div>
-  <!-- <nz-tabset>
-    @for(group of groupRoutes; track group ) {
-    <nz-tab [nzTitle]="group.date">
-      @for(route of group.routes; track route) {
-      <app-route-tabs [route]="route">
-      </app-route-tabs>
-      }
-    </nz-tab>
-    }
-  </nz-tabset> -->
   <app-route-tabs
     [response]="response"
   >
