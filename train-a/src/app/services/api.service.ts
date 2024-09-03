@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { Injectable, signal } from '@angular/core';
+import getErrorMessageByResponseStatus from '../shared/utilities/getErrorMessageByResponseStatus';
 
 export type Profile = {
   name: string;
@@ -66,11 +67,7 @@ export class ApiService {
         const profile: Profile = await response.json();
         return profile;
       }
-      if (response.status === 401) {
-        throw new Error('401, Wrong token identifier');
-      } else {
-        throw new Error(response.status.toString());
-      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
     } catch (error) {
       console.error('fetch profile', error);
       return nullUser;
@@ -90,11 +87,7 @@ export class ApiService {
         const updatedProfile: Profile = await response.json();
         return updatedProfile;
       }
-      if (response.status === 401) {
-        throw new Error('401, Wrong token identifier');
-      } else {
-        throw new Error(response.status.toString());
-      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
     } catch (error) {
       console.error('update profile', error);
       return nullUser;
@@ -112,11 +105,7 @@ export class ApiService {
       if (response.ok) {
         return true;
       }
-      if (response.status === 401) {
-        throw new Error('401, Wrong token identifier');
-      } else {
-        throw new Error(response.status.toString());
-      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
     } catch (error) {
       console.error('logout', error);
       return false;
@@ -135,13 +124,7 @@ export class ApiService {
       if (response.ok) {
         return true;
       }
-      if (response.status === 401) {
-        throw new Error('401, Wrong token identifier');
-      } else if (response.status === 400) {
-        throw new Error('400, Invalid password');
-      } else {
-        throw new Error(response.status.toString());
-      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
     } catch (error) {
       console.error('update password', error);
       return false;
@@ -207,11 +190,7 @@ export class ApiService {
       if (response.ok) {
         return true;
       }
-      if (response.status === 401) {
-        throw new Error('401, Wrong token identifier');
-      } else {
-        throw new Error(response.status.toString());
-      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
     } catch (error) {
       console.error('delete route', error);
       return false;
@@ -230,11 +209,7 @@ export class ApiService {
       if (response.ok) {
         return true;
       }
-      if (response.status === 401) {
-        throw new Error('401, Wrong token identifier');
-      } else {
-        throw new Error(response.status.toString());
-      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
     } catch (error) {
       console.error('update password', error);
       return false;
@@ -253,11 +228,7 @@ export class ApiService {
       if (response.ok) {
         return true;
       }
-      if (response.status === 401) {
-        throw new Error('401, Wrong token identifier');
-      } else {
-        throw new Error(response.status.toString());
-      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
     } catch (error) {
       console.error('update password', error);
       return false;

@@ -29,14 +29,16 @@ export class RoutesComponent {
   public startIndex: Signal<number> = computed(() => this.endIndex() - this.itemsPerPage);
   public itemsPerPage = 12;
   public isFormVisible = false;
+
   constructor(public readonly routesService: RoutesService) {}
-  showForm() {
+
+  public showForm() {
     this.isFormVisible = true;
   }
-  hideForm() {
+  public hideForm() {
     this.isFormVisible = false;
   }
-  createRoute() {
+  public createRoute() {
     this.showForm();
     this.routesService.mode = 'create';
   }

@@ -58,7 +58,7 @@ export class StationsFormComponent {
     this.init();
   }
 
-  async init() {
+  public async init() {
     const stations = await this.apiService.fetchStations();
     const carriages = await this.apiService.fetchCarriages();
     this.stations = stations;
@@ -77,7 +77,7 @@ export class StationsFormComponent {
     }
   }
 
-  async addCityField(initValue: string = '', e?: MouseEvent) {
+  public async addCityField(initValue: string = '', e?: MouseEvent) {
     e?.preventDefault();
 
     const id =
@@ -113,7 +113,7 @@ export class StationsFormComponent {
     }
   }
 
-  async addCarriageField(initValue: string = '', e?: MouseEvent) {
+  public async addCarriageField(initValue: string = '', e?: MouseEvent) {
     e?.preventDefault();
 
     const id =
@@ -147,7 +147,7 @@ export class StationsFormComponent {
     }
   }
 
-  removeCityField(i: { id: number; controlInstance: string }, e: MouseEvent): void {
+  public removeCityField(i: { id: number; controlInstance: string }, e: MouseEvent): void {
     e.preventDefault();
     if (this.listOfCitiesControl.length > 1) {
       const index = this.listOfCitiesControl.indexOf(i);
@@ -156,7 +156,7 @@ export class StationsFormComponent {
     }
   }
 
-  removeCarriageField(i: { id: number; controlInstance: string }, e: MouseEvent): void {
+  public removeCarriageField(i: { id: number; controlInstance: string }, e: MouseEvent): void {
     e.preventDefault();
     if (this.listOfCarriagesControl.length > 1) {
       const index = this.listOfCarriagesControl.indexOf(i);
@@ -165,7 +165,7 @@ export class StationsFormComponent {
     }
   }
 
-  submitForm(): void {
+  public submitForm(): void {
     if (this.citiesSubform.valid && this.carriagesSubform.valid) {
       const stations = Object.keys(this.citiesSubform.value)
         .filter((k) => this.citiesSubform.value[k] !== '')
@@ -201,7 +201,7 @@ export class StationsFormComponent {
     }
   }
 
-  getConnectedStationsByCity(city: string): string[] {
+  public getConnectedStationsByCity(city: string): string[] {
     const station = this.stations.find((s) => s.city === city);
 
     if (!station || !station.connectedTo) {
@@ -213,7 +213,7 @@ export class StationsFormComponent {
     return result;
   }
 
-  addStation(i: number, v: string) {
+  public addStation(i: number, v: string) {
     if (this.listOfCitiesControl.length === i + 1) {
       const cs = this.getConnectedStationsByCity(v);
       this.connectedStations.push(cs);
@@ -221,7 +221,7 @@ export class StationsFormComponent {
     }
   }
 
-  addCarriage(i: number) {
+  public addCarriage(i: number) {
     if (this.listOfCarriagesControl.length === i + 1) {
       this.addCarriageField();
     }

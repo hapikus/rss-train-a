@@ -27,11 +27,11 @@ export class RouteCardComponent {
 
   constructor(private readonly routesService: RoutesService) {}
 
-  confirmDelete() {
+  public confirmDelete() {
     this.routesService.deleteRoute(this.route.id);
   }
 
-  update() {
+  public update() {
     this.routesService.updatingRoute = this.route;
     this.routesService.mode = 'update';
   }

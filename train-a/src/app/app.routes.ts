@@ -28,7 +28,7 @@ export const routes: Routes = [
         (m) => m.RoutesComponent,
       ),
     title: 'Routes',
-    // canActivate: [adminGuard],
+    canActivate: [adminGuard],
   },
   {
     path: 'routes/:id',
@@ -37,6 +37,6 @@ export const routes: Routes = [
         (m) => m.RoutePageComponent,
       ),
     title: 'Ride',
-    // canActivate: [adminGuard],
+    canActivate: [adminGuard],
   },
 ];
