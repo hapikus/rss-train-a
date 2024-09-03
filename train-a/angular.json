@@ -35,6 +35,7 @@
               }
             ],
             "styles": [
+              "./node_modules/leaflet/dist/leaflet.css",
               "src/theme.less",
               "src/styles.scss"
             ],

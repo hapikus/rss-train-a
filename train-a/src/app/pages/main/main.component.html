@@ -1,1 +1,59 @@
-<p>main works!</p>
+<form nz-form [formGroup]="searchForm" (ngSubmit)="submitForm()" class="ant-advanced-search-form">
+  <div class="form">
+    <div class="form_dest">
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please select start stattion">
+          <nz-input-group [nzPrefix]="from">
+            <input formControlName="from" placeholder="From" nz-input [nzAutocomplete]="autoFrom" />
+          </nz-input-group>
+          <nz-autocomplete nzBackfill #autoFrom>
+            @for(option of (fromOptions$ | async); track option) {
+            <nz-auto-option [nzValue]="option.name">
+              {{ option.name }}
+            </nz-auto-option>
+            }
+          </nz-autocomplete>
+        </nz-form-control>
+      </nz-form-item>
+      <div class="icon-swap">
+        <span nz-icon nzType="swap" nzTheme="outline"></span>
+      </div>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please select end station">
+          <nz-input-group [nzPrefix]="to">
+            <input formControlName="to" placeholder="To" nz-input [nzAutocomplete]="autoTo" />
+          </nz-input-group>
+          <nz-autocomplete nzBackfill #autoTo>
+            @for(option of (toOptions$ | async); track option) {
+            <nz-auto-option [nzValue]="option.name">
+              {{ option.name }}
+            </nz-auto-option>
+            }
+          </nz-autocomplete>
+        </nz-form-control>
+      </nz-form-item>
+      <ng-template #from>
+        <span nz-icon nzType="environment" nzTheme="outline"></span>
+      </ng-template>
+      <ng-template #to>
+        <span nz-icon nzType="environment" nzTheme="fill"></span>
+      </ng-template>
+    </div>
+    <div class="form_date">
+      <nz-form-item>
+        <nz-form-control [nzSm]="24" [nzXs]="24" [nzErrorTip]="'Please select date'">
+          <nz-date-picker formControlName="tripDate" class="input_date" nzFormat="MMMM dd"
+            [nzDisabledDate]="disabledDates"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div class="form_submit">
+      <button nz-button nzType="primary">Submit</button>
+    </div>
+  </div>
+  <app-route-tabs
+    [response]="response"
+  >
+  </app-route-tabs>
+  <app-map (markerClicked)="handleMarkerClick($event)"></app-map>
+</form>
