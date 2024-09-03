@@ -1,0 +1,24 @@
+<div class="carriage">
+  <div class="seat-map">
+    <div class="left-seats">
+      <div class="line" *ngFor="let leftSeat of [].constructor(carriage.leftSeats); let leftSeatIndex = index">
+        <div class="row" *ngFor="let row of [].constructor(carriage.rows); let i = index">
+          <nz-tag [nzColor]="isSeatReserved(i, leftSeatIndex, 'left') ? 'default' : 'blue'">
+            {{ getSeatNumber(i, leftSeatIndex, 'left') }}
+          </nz-tag>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-seats">
+      <div class="line" *ngFor="let rightSeat of [].constructor(carriage.rightSeats); let rightSeatsIndex = index">
+        <div class="row" *ngFor="let row of [].constructor(carriage.rows); let i = index">
+          <nz-tag [nzColor]="isSeatReserved(i, rightSeat, 'right') ? 'default' : 'blue'">
+            {{ getSeatNumber(i, rightSeatsIndex, 'right') }}
+          </nz-tag>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
