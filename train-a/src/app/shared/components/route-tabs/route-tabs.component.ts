@@ -3,6 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { ResponseSearch, Route, Schedule } from '../../../services/search.service';
 
 @Component({
@@ -13,6 +14,7 @@ import { ResponseSearch, Route, Schedule } from '../../../services/search.servic
     NzTabsModule,
     NzCardModule,
     NzStepsModule,
+    NzIconModule,
   ],
   templateUrl: './route-tabs.component.html',
   styleUrl: './route-tabs.component.scss',
