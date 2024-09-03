@@ -121,4 +121,17 @@ export class SearchService {
     }
     return throwError(() => new Error(errorMessage));
   }
+
+  public addStation(station: {
+    city: string | null;
+    latitude: number | null;
+    longitude: number | null;
+    relations: Array<number> | [];
+  }): Observable<Station> {
+    return this.http.post<Station>(this.apiUrlStation, station);
+  }
+
+  public deleteStation(stationId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrlStation}/${stationId}`);
+  }
 }

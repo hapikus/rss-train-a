@@ -18,6 +18,7 @@ export class MapComponent implements OnInit {
 
   private map!: Map;
   private stations: Station[] = [];
+  private markers: L.Marker[] = [];
 
   constructor(private markerService: MarkerService, private searchService: SearchService) {}
 
@@ -33,13 +34,18 @@ export class MapComponent implements OnInit {
     }).addTo(this.map);
   }
 
-  private addMarkersToMap(): void {
+  public addMarkersToMap(): void {
+    this.map.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        this.map.removeLayer(layer);
+      }
+    });
     this.stations.forEach((station) => {
       this.markerService.addMarkerToMap(this.map, station, this.handleMarkerClick.bind(this));
     });
   }
 
-  private loadStations() {
+  public loadStations() {
     this.searchService.getStations().subscribe((stations) => {
       this.stations = stations;
       this.addMarkersToMap();
