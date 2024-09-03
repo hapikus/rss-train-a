@@ -28,7 +28,6 @@ export const routes: Routes = [
     component: OrdersComponent,
     canActivate: [authGuard],
   },
-
   {
     path: 'carriages',
     component: CarriagesComponent,

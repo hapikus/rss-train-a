@@ -66,48 +66,48 @@ export class ProfileComponent implements OnInit {
     public apiService: ApiService,
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getProfile();
   }
 
-  async getProfile(): Promise<void> {
+  private async getProfile(): Promise<void> {
     const profile = await this.apiService.fetchProfile();
     this.userName.set(profile.name);
     this.email.set(profile.email);
     this.role.set(profile.role);
   }
 
-  async updateProfile(): Promise<void> {
+  private async updateProfile(): Promise<void> {
     const updatedProfile = await this.apiService.updateProfile(this.profile());
     if (this.userName() !== updatedProfile.name) this.userName.set(updatedProfile.name);
     if (this.email() !== updatedProfile.email) this.email.set(updatedProfile.email);
     if (this.role() !== updatedProfile.role) this.role.set(updatedProfile.role);
   }
 
-  async updatePassword(): Promise<void> {
+  public async updatePassword(): Promise<void> {
     if (this.profileForm.controls.password.valid) {
       this.apiService.updatePassword(this.profileForm.controls.password.value);
     }
     this.hideModal();
   }
 
-  showModal(): void {
+  public showModal(): void {
     this.isModalVisible = true;
   }
 
-  hideModal(): void {
+  public hideModal(): void {
     this.isModalVisible = false;
   }
 
-  enableNameField(): void {
+  public enableNameField(): void {
     this.profileForm.get('userName')?.enable();
   }
 
-  enableEmailField(): void {
+  public enableEmailField(): void {
     this.profileForm.get('email')?.enable();
   }
 
-  submitNewName(): void {
+  public submitNewName(): void {
     if (this.profileForm.controls.userName.valid) {
       this.userName.set(this.profileForm.controls.userName.value || '');
       this.updateProfile();
@@ -115,7 +115,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  submitNewEmail(): void {
+  public submitNewEmail(): void {
     if (this.profileForm.controls.email.valid) {
       this.email.set(this.profileForm.controls.email.value || '');
       this.updateProfile();

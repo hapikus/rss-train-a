@@ -32,13 +32,13 @@ export interface Schedule {
 
 export interface Segment {
   occupiedSeats: Array<number>
-  price: {
-    carriage1: number,
-    carriage2: number,
-    carriage3: number,
-  }
+  price: Price,
   time: Array<string>
 }
+
+export type Price = {
+  [key: string]: number;
+};
 
 export interface Station {
   id: number;
