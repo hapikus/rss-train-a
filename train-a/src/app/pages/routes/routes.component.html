@@ -1,0 +1,21 @@
+@if (routesService.mode !== 'view') {<app-stations-form/>}
+<section class="heading">
+  <button nz-button nzType="primary" (click)="createRoute()" [disabled]="routesService.mode !== 'view'"><span nz-icon nzType="plus"></span>Create</button>
+</section>
+<nz-spin nzTip="Loading..." [nzSpinning]="routesService.routes().length === 0">
+  @if (routesService.routes().length === 0) {
+    <nz-empty nzNotFoundImage="simple"></nz-empty>
+  }
+  <section class="routes">
+    @for (route of routesService.routes().slice(startIndex(), endIndex()); track $index) {
+      <app-route-card [route]="route" />
+    }
+  </section>
+</nz-spin>
+  <nz-pagination
+    [(nzPageIndex)]="pageIndex"
+    [nzTotal]="routesService.routes().length"
+    [nzPageSize]="itemsPerPage"
+    [nzResponsive]="true"
+    class="pagination"
+  ></nz-pagination>

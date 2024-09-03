@@ -14,11 +14,13 @@ export class LoginService {
   private readonly apiService = inject(ApiService);
   private readonly apiUrl = '/api/signin';
   private readonly TOKEN_KEY = 'token';
+  public isManager = false;
 
   public login(email: string, password: string): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(this.apiUrl, { email, password }).pipe(
       tap((response) => {
         localStorage.setItem(this.TOKEN_KEY, response.token);
+        this.updateRole();
       }),
       catchError((error: HttpErrorResponse) => {
         const errorMessage = this.getErrorMessage(error);
@@ -52,6 +54,11 @@ export class LoginService {
       }
     }
     return 'An unknown error occurred!';
+  }
+
+  public async updateRole() {
+    const profile = await this.apiService.fetchProfile();
+    this.isManager = profile.role === 'manager';
   }
 
   public isAuthenticated(): boolean {

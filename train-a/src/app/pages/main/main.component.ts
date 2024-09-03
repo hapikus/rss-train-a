@@ -63,6 +63,7 @@ import { RouteTabsComponent } from '../../shared/components/route-tabs/route-tab
   providers: [DatePipe],
 })
 export class MainComponent {
+
   public searchForm: FormGroup = this.fb.group({
     from: ['', Validators.required],
     to: ['', [Validators.required, this.notSameAsStart.bind(this)]],
