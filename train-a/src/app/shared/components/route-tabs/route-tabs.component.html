@@ -1,0 +1,78 @@
+@if(groupTabs.length > 0){
+<nz-tabset>
+  @for(group of groupTabs; track group ) {
+  <nz-tab [nzTitle]="group.date" class="tab">
+    <div class="tab-holder">
+      @for (route of group.routes; track route) {
+      <nz-card nzHoverable [nzBodyStyle]="{'padding': '0px'}" class="card-holder">
+        <div class="card">
+          <div class="left-container">
+            <nz-steps [nzCurrent]="3" nzSize="small">
+              <nz-step [nzTitle]="nzFrom" [nzIcon]="custom1">
+              </nz-step>
+              <nz-step [nzTitle]="nzDur" [nzIcon]="custom1"></nz-step>
+              <nz-step [nzTitle]="nzTo" [nzIcon]="custom1"></nz-step>
+              <ng-template #nzFrom>
+                <div class="card__time">
+                  <p>{{ route.timeStarted | date: 'HH:mm' }}</p>
+                  <span nz-icon nzType="environment" nzTheme="outline"></span>
+                </div>
+                <div class="card__time__date">{{ route.timeStarted | date: 'MMMM dd' }}</div>
+                <div class="card__time__city">{{ route.cityFrom }}</div>
+              </ng-template>
+              <ng-template #nzDur>
+                <div class="card__duration">{{ route.duration }}</div>
+              </ng-template>
+              <ng-template #nzTo>
+                <div class="card__time">
+                  <span nz-icon nzType="environment" nzTheme="fill"></span>
+                  {{ route.timeArrived | date: 'HH:mm' }}
+                </div>
+                <div class="card__time__date">{{ route.timeArrived | date: 'MMMM dd' }}</div>
+                <div class="card__city">{{ route.cityTo }}</div>
+              </ng-template>
+              <ng-template #custom1 style="display: none;">
+              </ng-template>
+            </nz-steps>
+            <div class="route">
+              <div class="route__city">
+                <span class="choo-choo-mf">
+                  <svg fill="#000000" height="30px" width="30px" version="1.1" id="Capa_1"
+                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 480 480"
+                    xml:space="preserve">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <path id="XMLID_1707_"
+                        d="M10,210.001c-5.523,0-10-4.477-10-10s4.477-10,10-10h2c5.523,0,10,4.477,10,10s-4.477,10-10,10H10z M0,287.647V260c0-16.542,13.458-30,30-30h109.836l-18.182-99.999H30c-5.514,0-10,5.541-10,12.353v17.647c0,5.523-4.477,10-10,10 s-10-4.477-10-10v-20c0-0.926,0.126-1.823,0.362-2.675C2.608,121.866,15.043,110.001,30,110.001h99.828 c0.122-0.002,0.245-0.002,0.368,0h89.632c0.122-0.002,0.245-0.002,0.368,0h89.631c0.123-0.002,0.247-0.002,0.368,0h11.898 c47.757,0,91.209,29.101,113.399,75.946l41.192,86.961c5.003,10.562,4.256,23.214-1.949,33.021 C469.16,314.74,459.902,320,449.973,320H30C13.458,320,0,305.487,0,287.647z M231.982,130.001l17.857,98.21 c0.109,0.601,0.162,1.199,0.163,1.789h69.834l-18.182-99.999H231.982z M141.982,130.001l17.857,98.21 c0.109,0.601,0.162,1.199,0.163,1.789h69.834l-18.182-99.999H141.982z M20,287.647C20,294.459,24.486,300,30,300h419.973 c4.217,0,6.736-2.987,7.863-4.767c2.017-3.187,3.279-8.477,0.775-13.764l-41.192-86.961c-18.849-39.79-55.375-64.507-95.325-64.507 h-0.111l17.856,98.21c0.109,0.601,0.162,1.199,0.163,1.789H390c5.522,0,10,4.477,10,10s-4.478,10-10,10H30c-5.514,0-10,4.486-10,10 V287.647z M470,350H10c-5.523,0-10,4.477-10,10s4.477,10,10,10h460c5.522,0,10-4.477,10-10S475.522,350,470,350z M100,210.001 c5.523,0,10-4.477,10-10s-4.477-10-10-10H40c-5.523,0-10,4.477-10,10s4.477,10,10,10H100z">
+                      </path>
+                    </g>
+                  </svg>
+                </span>
+                {{ route.startStationId }} -> {{ route.endStationId }}
+              </div>
+              <div class="route__link">
+                <a href="">Route</a>
+              </div>
+            </div>
+          </div>
+          <div class="carriage">
+            @for(carriage of getCarriageKeys(route.carriages); track carriage){
+            <div class="carriage__content">
+              <p>
+                {{ carriage }}:
+              </p>
+              <p>
+                {{ route.carriages[carriage] | currency }}
+              </p>
+            </div>
+            }
+          </div>
+        </div>
+      </nz-card>
+      }
+    </div>
+  </nz-tab>
+  }
+</nz-tabset>
+}
