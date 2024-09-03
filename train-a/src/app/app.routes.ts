@@ -6,12 +6,18 @@ import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { CarriagesComponent } from './pages/carriages/carriages.component';
+import { MapStationComponent } from './pages/map-stations/map-stations.component';
 
 export const routes: Routes = [
   {
     path: '',
     component: MainComponent,
     title: 'Main Page',
+  },
+  {
+    path: 'stations',
+    component: MapStationComponent,
+    title: 'Stations',
   },
   {
     path: 'signup',

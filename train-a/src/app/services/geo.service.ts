@@ -16,7 +16,10 @@ export interface CityLocation {
 export class GeoService {
   private apiUrl = 'https://nominatim.openstreetmap.org/search';
 
-  constructor(private http: HttpClient, private searchService: SearchService) {}
+  constructor(
+    private http: HttpClient,
+    private searchService: SearchService,
+  ) {}
 
   public searchCity(city: string): Observable<CityLocation[]> {
     const params = {
@@ -31,10 +34,10 @@ export class GeoService {
           lat: result.lat,
           lon: result.lon,
         }))),
-      );
-    }
+    );
+  }
 
   public findClosestStation(lat: string, lon: string): Observable<Station | null> {
-      return this.searchService.findClosestStation(parseFloat(lat), parseFloat(lon));
-    }
+    return this.searchService.findClosestStation(parseFloat(lat), parseFloat(lon));
+  }
 }

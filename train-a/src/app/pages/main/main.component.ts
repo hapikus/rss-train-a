@@ -83,7 +83,6 @@ export class MainComponent {
     private geoService: GeoService,
     private searchService: SearchService,
     private markerService: MarkerService,
-    private datePipe: DatePipe,
   ) {
     this.fromOptions$ = this.formUtilsService.createSearchObservable(
       this.startCity,
