@@ -57,12 +57,11 @@ import { RouteTabsComponent } from '../../shared/components/route-tabs/route-tab
     LeafletModule,
     MapComponent,
     RouteTabsComponent,
-],
+  ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
   providers: [DatePipe],
 })
-
 export class MainComponent {
   public searchForm: FormGroup = this.fb.group({
     from: ['', Validators.required],
@@ -101,12 +100,7 @@ export class MainComponent {
     const fromCoords = this.searchForm.get('fromCoords')?.value;
     const toCoords = this.searchForm.get('toCoords')?.value;
 
-    this.markerService.toggleMarker(
-      station,
-      fromCoords,
-      toCoords,
-      this.setFormValue.bind(this),
-    );
+    this.markerService.toggleMarker(station, fromCoords, toCoords, this.setFormValue.bind(this));
   }
 
   public setFormValue(field: string, value: string | Coords) {

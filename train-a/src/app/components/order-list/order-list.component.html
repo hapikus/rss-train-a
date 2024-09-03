@@ -1,0 +1,59 @@
+<div class="orders-list">
+  @for (order of sortedOrders; track $index) {
+    <nz-card nzHoverable [nzBodyStyle]="{ padding: '0px' }" class="order-card">
+      <div class="order-header">
+        <p><strong>Carriage type:</strong> {{ getCarriageType(order) }}</p>
+        <p><strong>Price:</strong> {{ getTotalPrice(order) | currency }}</p>
+        <p><strong>Car number:</strong></p>
+        <p><strong>Seat number:</strong> {{ order.seatId }}</p>
+      </div>
+
+      <nz-divider></nz-divider>
+
+      <!-- <div class="trip-details">
+        <p><strong>Start station:</strong> Station {{ order.path[0] }}</p>
+        <p><strong>End station:</strong> Station {{ order.path[order.path.length - 1] }}</p>
+        <p><strong>Seat number:</strong> {{ order.seatId }}</p>
+        <p><strong>Trip duration:</strong> {{ getTripDuration(order) }}</p>
+      </div> -->
+      <nz-steps [nzCurrent]="3" nzSize="small">
+        <nz-step [nzTitle]="nzFrom" [nzIcon]="custom1"></nz-step>
+        <nz-step [nzTitle]="nzDur" [nzIcon]="custom1"></nz-step>
+        <nz-step [nzTitle]="nzTo" [nzIcon]="custom1"></nz-step>
+        <ng-template #nzFrom>
+          <div>
+            <div class="card__time">
+              {{ order.schedule.segments[0].departure | date: 'HH:mm' }}
+            </div>
+            <div class="card__time__date">
+              {{ order.schedule.segments[0].departure | date: 'MMMM dd' }}
+            </div>
+            <div class="card__time__city">City {{ order.path[0] }}</div>
+          </div>
+        </ng-template>
+        <ng-template #nzDur>
+          <div class="card__duration">{{ getTripDuration(order) }}</div>
+        </ng-template>
+        <ng-template #nzTo>
+          <div class="card__time">
+            {{
+              order.schedule.segments[order.schedule.segments.length - 1].arrival | date: 'HH:mm'
+            }}
+          </div>
+          <div class="card__time__date">
+            {{
+              order.schedule.segments[order.schedule.segments.length - 1].arrival | date: 'MMMM dd'
+            }}
+          </div>
+          <div class="card__city">City {{ order.path[order.path.length - 1] }}</div>
+        </ng-template>
+        <ng-template #custom1 style="display: none"> </ng-template>
+      </nz-steps>
+      @if (order.status === 'active') {
+        <button nz-button nzType="primary" (click)="onCancelOrder(order)" class="cancel-btn">
+          Cancel
+        </button>
+      }
+    </nz-card>
+  }
+</div>

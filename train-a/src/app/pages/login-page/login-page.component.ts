@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   FormControl,
@@ -13,7 +13,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { take } from 'rxjs';
 import { LoginService } from '../../services/login.service';
-import { CustomValidators } from '../../../validators/custom-validators';
+import { CustomValidators } from '../../shared/utilities/custom-validators';
 
 @Component({
   selector: 'app-login-page',
@@ -28,12 +28,16 @@ import { CustomValidators } from '../../../validators/custom-validators';
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent {
-  private readonly router = inject(Router);
-  private readonly formBuilder = inject(NonNullableFormBuilder);
-  private readonly loginService = inject(LoginService);
   public errorMessage = '';
+
+  constructor(
+    private router: Router,
+    private formBuilder: NonNullableFormBuilder,
+    private loginService: LoginService,
+  ) {}
 
   public loginForm: FormGroup<{
     userName: FormControl<string>;
@@ -43,7 +47,7 @@ export class LoginPageComponent {
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
-  submitForm(): void {
+  public submitForm(): void {
     if (this.loginForm.valid) {
       const userName = this.loginForm.controls.userName.value;
       const userPassword = this.loginForm.controls.password.value;
@@ -56,18 +60,22 @@ export class LoginPageComponent {
             this.router.navigate(['/']);
           },
           error: (error: Error) => {
-            this.errorMessage = error.message;
-
-            if (error.message.includes('Incorrect email or password')) {
-              this.loginForm.controls.password.setErrors({ userNotFound: true });
-            } else if (error.message.includes('Email is wrong')) {
-              this.loginForm.controls.userName.setErrors({ invalidEmail: true });
-            } else {
-              this.loginForm.controls.userName.setErrors({ serverError: true });
-              this.loginForm.controls.password.setErrors({ serverError: true });
-            }
+            this.handleLoginError(error);
           },
         });
+    }
+  }
+
+  private handleLoginError(error: Error): void {
+    this.errorMessage = error.message;
+
+    if (error.message.includes('Incorrect email or password')) {
+      this.loginForm.controls.password.setErrors({ userNotFound: true });
+    } else if (error.message.includes('Email is wrong')) {
+      this.loginForm.controls.userName.setErrors({ invalidEmail: true });
+    } else {
+      this.loginForm.controls.userName.setErrors({ serverError: true });
+      this.loginForm.controls.password.setErrors({ serverError: true });
     }
   }
 }

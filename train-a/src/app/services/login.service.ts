@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ import { catchError, tap } from 'rxjs/operators';
 export class LoginService {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly apiService = inject(ApiService);
   private readonly apiUrl = '/api/signin';
   private readonly TOKEN_KEY = 'token';
 
@@ -24,6 +26,14 @@ export class LoginService {
         return throwError(() => new Error(errorMessage));
       }),
     );
+  }
+
+  public async logout() {
+    const logoutResult = await this.apiService.logout();
+    if (logoutResult) {
+      localStorage.removeItem(this.TOKEN_KEY);
+      this.router.navigate(['/']);
+    }
   }
 
   private getErrorMessage(error: HttpErrorResponse): string {
