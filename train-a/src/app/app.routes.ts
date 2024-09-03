@@ -4,6 +4,7 @@ import { SignupComponent } from './pages/signup/signup.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { authGuard } from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
+import { OrdersComponent } from './pages/orders/orders.component';
 
 export const routes: Routes = [
   {
@@ -22,20 +23,21 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'orders',
+    component: OrdersComponent,
+    canActivate: [authGuard],
+  },
+  {
     path: 'profile',
     loadComponent: () =>
-      import('./pages/profile/profile.component').then(
-        (m) => m.ProfileComponent,
-      ),
+      import('./pages/profile/profile.component').then((m) => m.ProfileComponent),
     title: 'Profile Page',
     canActivate: [loginGuard],
   },
   {
     path: '**',
     loadComponent: () =>
-      import('./pages/not-found/not-found.component').then(
-        (m) => m.NotFoundComponent,
-      ),
+      import('./pages/not-found/not-found.component').then((m) => m.NotFoundComponent),
     title: '404 Page',
   },
 ];
