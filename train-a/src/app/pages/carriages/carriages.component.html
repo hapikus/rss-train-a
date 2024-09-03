@@ -1,0 +1,55 @@
+<button nz-button (click)="onCreate()">Create</button>
+
+@if (carriages().length > 0) {
+  <div class="carriages-list">
+    @for (carriage of carriages(); track $index) {
+      <nz-divider [nzText]="titleTemplate"></nz-divider>
+      <button nz-button (click)="onEdit(carriage)">Update</button>
+
+      <ng-template #titleTemplate>
+        <h2 nz-typography>{{ carriage.name }}</h2>
+      </ng-template>
+
+      <nz-collapse class="seat-map-collapse">
+        <nz-collapse-panel
+          [nzHeader]="isCollapsed ? 'Show Seat Map' : 'Hide Seat Map'"
+          [nzShowArrow]="false"
+          [nzActive]="!isCollapsed"
+          (nzActiveChange)="toggleCollapse(isCollapsed)"
+        >
+          <app-carriage-prototype [carriage]="carriage"></app-carriage-prototype>
+        </nz-collapse-panel>
+      </nz-collapse>
+    }
+  </div>
+  <nz-modal
+    [(nzVisible)]="isModalVisible"
+    nzTitle="Carriage Form"
+    (nzOnCancel)="onCancel()"
+    (nzOnOk)="onSave()"
+  >
+    <ng-container *nzModalContent>
+      <form nz-form>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6">Rows</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input [(ngModel)]="carriageForm.rows" name="rows" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6">Left Seats</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input [(ngModel)]="carriageForm.leftSeats" name="leftSeats" />
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6">Right Seats</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input [(ngModel)]="carriageForm.rightSeats" name="rightSeats" />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      <app-carriage-prototype [carriage]="carriageForm"></app-carriage-prototype>
+    </ng-container>
+  </nz-modal>
+}
