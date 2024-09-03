@@ -1,0 +1,124 @@
+<form nz-form [formGroup]="profileForm">
+  <button nz-button class="button" [nzType]="'primary'" (click)="showModal()">
+    Change Password
+  </button>
+  <nz-form-item class="margin-top-1">
+    <nz-form-control>
+      <div class="field">
+        <p class="heading">Name:</p>
+        <div class="editable">
+          <input
+            type="text"
+            formControlName="userName"
+            nz-input
+            [nzBorderless]="profileForm.controls.userName.disabled"
+            [(value)]="userName"
+            (keydown.enter)="submitNewName()"
+          />
+          @if (profileForm.controls.userName.disabled) {
+            <button nz-button nzType="text" (click)="enableNameField()">
+              <span nz-icon nzType="edit"></span>
+            </button>
+          } @else {
+            <button nz-button nzType="text" (click)="submitNewName()">
+              <span nz-icon nzType="enter"></span>
+            </button>
+          }
+        </div>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control
+      nzErrorTip="Please input your email!"
+      nzHasFeedback
+      [nzErrorTip]="emailErrorTpl"
+    >
+      <div class="field">
+        <p class="heading">Email:</p>
+        <div class="editable">
+          <input
+            type="text"
+            nz-input
+            formControlName="email"
+            [nzBorderless]="profileForm.controls.email.disabled"
+            [(value)]="email"
+            (keydown.enter)="submitNewEmail()"
+          />
+          @if (profileForm.controls.email.disabled) {
+            <button nz-button nzType="text" (click)="enableEmailField()">
+              <span nz-icon nzType="edit"></span>
+            </button>
+          } @else {
+            <button nz-button nzType="text" (click)="submitNewEmail()">
+              <span nz-icon nzType="enter"></span>
+            </button>
+          }
+        </div>
+      </div>
+    </nz-form-control>
+  </nz-form-item>
+  <button
+    nz-button
+    nzDanger
+    class="button"
+    [nzType]="'primary'"
+    (click)="loginService.logout()"
+  >
+    Log out
+  </button>
+  <nz-modal
+    [(nzVisible)]="isModalVisible"
+    nzWidth="300px"
+    nzTitle="Change Password"
+    (nzOnCancel)="hideModal()"
+  >
+    <ng-container *nzModalContent>
+      <nz-form-item>
+        <nz-form-control [nzErrorTip]="passwordErrorTpl">
+          <nz-input-group nzPrefixIcon="lock">
+            <input type="password" nz-input formControlName="password" placeholder="Password" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+    </ng-container>
+    <div *nzModalFooter>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="updatePassword()"
+        class="button"
+        [disabled]="profileForm.controls.password.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </nz-modal>
+</form>
+<div class="image">
+  <img nz-image nzDisablePreview [nzSrc]="imageUrl" alt="" />
+</div>
+
+<ng-template #emailErrorTpl let-control>
+  @if (control.errors?.['invalidEmail']) {
+    Incorrect email!
+  }
+  @if (control.errors?.['required']) {
+    Required!
+  }
+  @if (profileForm.controls.userName.hasError('invalidEmail')) {
+    {{ errorMessage }}
+  }
+</ng-template>
+
+<ng-template #passwordErrorTpl let-control>
+  @if (control.errors?.['required']) {
+    Required!
+  }
+  @if (control.errors?.['minlength']) {
+    Password has to be not less 8 symbols!
+  }
+  @if (profileForm.controls.password.hasError('userNotFound')) {
+    {{ errorMessage }}
+  }
+</ng-template>

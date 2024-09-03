@@ -1,0 +1,50 @@
+:host {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0.75rem;
+  background-color: var(--form-background-color);
+  border-radius: 0.5rem;
+  column-gap: 20px;
+}
+
+.button {
+  width: 100%;
+}
+
+.heading {
+  margin-left: 0.75rem;
+  width: 2rem;
+
+}
+
+.value {
+  width: 100%;
+  min-height: 2rem;
+}
+
+.editable {
+  display: flex;
+  gap: 1rem
+}
+
+.margin-top-1 {
+  margin-top: 1rem;
+}
+
+.image {
+  height: 300px;
+
+  > img {
+    height: 300px;
+    object-fit: contain;
+    border-radius: 0.25rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .image {
+    display: none;
+  }
+}
