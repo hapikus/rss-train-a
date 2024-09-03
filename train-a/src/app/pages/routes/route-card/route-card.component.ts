@@ -4,6 +4,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { RouterLink } from '@angular/router';
 import { nullRoute, Route, RoutesService } from '../../../services/routes.service';
 
 @Component({
@@ -16,6 +17,7 @@ import { nullRoute, Route, RoutesService } from '../../../services/routes.servic
     NzTabsModule,
     NzTimelineModule,
     NzPopconfirmModule,
+    RouterLink,
   ],
   templateUrl: './route-card.component.html',
   styleUrl: './route-card.component.scss',
@@ -25,7 +27,12 @@ export class RouteCardComponent {
 
   constructor(private readonly routesService: RoutesService) {}
 
-  confirm() {
+  confirmDelete() {
     this.routesService.deleteRoute(this.route.id);
+  }
+
+  update() {
+    this.routesService.updatingRoute = this.route;
+    this.routesService.mode = 'update';
   }
 }

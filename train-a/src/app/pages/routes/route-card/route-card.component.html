@@ -9,37 +9,37 @@
       <nz-tab nzTitle="Cities">
         <nz-timeline>
           @for (city of route.cities; track $index) {
-            <nz-timeline-item>{{city}}</nz-timeline-item>
+            <nz-timeline-item>{{ city }}</nz-timeline-item>
           }
         </nz-timeline>
       </nz-tab>
       <nz-tab nzTitle="Carriages">
         <nz-timeline>
           @for (carriage of route.carriages; track $index) {
-            <nz-timeline-item>{{carriage}}</nz-timeline-item>
+            <nz-timeline-item>{{ carriage }}</nz-timeline-item>
           }
         </nz-timeline>
       </nz-tab>
     </nz-tabset>
   </nz-card-tab>
 </nz-card>
-<ng-template #actionEdit onclick="">
-  <div>
+<ng-template #actionEdit>
+  <button (click)="update()">
     <span nz-icon nzType="edit"></span>
     <p>Update</p>
-  </div>
+  </button>
 </ng-template>
 <ng-template #actionAssign>
-  <div>
+  <a routerLink="{{ route.id }}">
     <span nz-icon nzType="snippets"></span>
     <p>Assign</p>
-  </div>
+  </a>
 </ng-template>
 <ng-template #actionDelete>
   <div
     nz-popconfirm
     nzPopconfirmPlacement="top"
-    (nzOnConfirm)="confirm()"
+    (nzOnConfirm)="confirmDelete()"
     nzPopconfirmTitle="Are you sure delete this route?"
   >
     <span nz-icon nzType="delete"></span>

@@ -6,6 +6,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { RouteCardComponent } from './route-card/route-card.component';
 import { RoutesService } from '../../services/routes.service';
+import { StationsFormComponent } from './stations-form/station-form.component';
 
 @Component({
   selector: 'app-routes',
@@ -17,6 +18,7 @@ import { RoutesService } from '../../services/routes.service';
     NzPaginationModule,
     NzSpinModule,
     RouteCardComponent,
+    StationsFormComponent,
   ],
   templateUrl: './routes.component.html',
   styleUrl: './routes.component.scss',
@@ -26,5 +28,16 @@ export class RoutesComponent {
   public endIndex: Signal<number> = computed(() => this.pageIndex() * this.itemsPerPage);
   public startIndex: Signal<number> = computed(() => this.endIndex() - this.itemsPerPage);
   public itemsPerPage = 12;
+  public isFormVisible = false;
   constructor(public readonly routesService: RoutesService) {}
+  showForm() {
+    this.isFormVisible = true;
+  }
+  hideForm() {
+    this.isFormVisible = false;
+  }
+  createRoute() {
+    this.showForm();
+    this.routesService.mode = 'create';
+  }
 }

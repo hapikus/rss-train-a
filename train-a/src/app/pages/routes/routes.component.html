@@ -1,5 +1,6 @@
+@if (routesService.mode !== 'view') {<app-stations-form/>}
 <section class="heading">
-  <button nz-button nzType="primary"><span nz-icon nzType="plus"></span>Create</button>
+  <button nz-button nzType="primary" (click)="createRoute()" [disabled]="routesService.mode !== 'view'"><span nz-icon nzType="plus"></span>Create</button>
 </section>
 <nz-spin nzTip="Loading..." [nzSpinning]="routesService.routes().length === 0">
   @if (routesService.routes().length === 0) {

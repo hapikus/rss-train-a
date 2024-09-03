@@ -1,0 +1,165 @@
+<section class="wrapper">
+  <form nz-form [formGroup]="citiesSubform" (ngSubmit)="submitForm()">
+    <nz-form-label [nzXs]="24" [nzSm]="4" class="label"> Stations </nz-form-label>
+    <nz-form-item>
+      <nz-form-control
+        [nzXs]="24"
+        [nzSm]="20"
+        nzErrorTip="Input station or delete this field."
+        nzHasFeedback
+        class="control"
+      >
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Select a station"
+          class="select"
+          [attr.id]="listOfCitiesControl[0].id"
+          [formControlName]="listOfCitiesControl[0].controlInstance"
+          (ngModelChange)="addStation(0, $event)"
+        >
+          @for (station of stations; track $index) {
+            <nz-option [nzLabel]="station.city" [nzValue]="station.city"></nz-option>
+          }
+        </nz-select>
+        <button
+          [disabled]="true"
+          nz-button
+          nzType="default"
+          nzShape="circle"
+          (click)="removeCityField(listOfCitiesControl[0], $event)"
+          class="remove-button"
+        >
+          <span nz-icon nzType="minus-circle-o"></span>
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+    @for (control of listOfCitiesControl; track control; let i = $index) {
+      @if (i > 0) {
+        <nz-form-item>
+          <nz-form-control
+            [nzXs]="24"
+            [nzSm]="20"
+            nzErrorTip="Input station or delete this field."
+            nzHasFeedback
+            class="control"
+          >
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select a station"
+              class="select"
+              [attr.id]="control.id"
+              [formControlName]="control.controlInstance"
+              (ngModelChange)="addStation(i, $event)"
+            >
+              @for (stationName of connectedStations[i]; track $index) {
+                <nz-option [nzLabel]="stationName" [nzValue]="stationName"></nz-option>
+              }
+            </nz-select>
+            <button
+              [disabled]="i < 3"
+              nz-button
+              nzType="default"
+              nzShape="circle"
+              (click)="removeCityField(control, $event)"
+              class="remove-button"
+            >
+              <span nz-icon nzType="minus-circle-o"></span>
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      }
+    }
+    <p class="ant-form-item-explain-error">{{ stationsLengthMessage }}</p>
+    <!-- <nz-form-item>
+    <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20 }">
+      <p class="ant-form-item-explain-error">{{ stationsLengthMessage }}</p>
+      <button nz-button nzType="primary" class="button" [disabled]="isSaveButtonDisabled">
+        <span nz-icon nzType="save"></span>Save
+      </button>
+    </nz-form-control>
+  </nz-form-item> -->
+  </form>
+  <form nz-form [formGroup]="carriagesSubform" (ngSubmit)="submitForm()">
+    <nz-form-label [nzXs]="24" [nzSm]="4" class="label"> Carriages </nz-form-label>
+    <nz-form-item>
+      <nz-form-control
+        [nzXs]="24"
+        [nzSm]="20"
+        nzErrorTip="Input carriage or delete this field."
+        nzHasFeedback
+        class="control"
+      >
+        <nz-select
+          nzShowSearch
+          nzAllowClear
+          nzPlaceHolder="Select a carriage"
+          class="select"
+          [attr.id]="listOfCarriagesControl[0].id"
+          [formControlName]="listOfCarriagesControl[0].controlInstance"
+          (ngModelChange)="addCarriage(0)"
+        >
+          @for (carriage of carriages; track $index) {
+            <nz-option [nzLabel]="carriage.code" [nzValue]="carriage.name"></nz-option>
+          }
+        </nz-select>
+        <button
+          [disabled]="true"
+          nz-button
+          nzType="default"
+          nzShape="circle"
+          (click)="removeCarriageField(listOfCarriagesControl[0], $event)"
+          class="remove-button"
+        >
+          <span nz-icon nzType="minus-circle-o"></span>
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+    @for (control of listOfCarriagesControl; track control; let i = $index) {
+      @if (i > 0) {
+        <nz-form-item>
+          <nz-form-control
+            [nzXs]="24"
+            [nzSm]="20"
+            nzErrorTip="Input carriage or delete this field."
+            nzHasFeedback
+            class="control"
+          >
+            <nz-select
+              nzShowSearch
+              nzAllowClear
+              nzPlaceHolder="Select a carriage"
+              class="select"
+              [attr.id]="control.id"
+              [formControlName]="control.controlInstance"
+              (ngModelChange)="addCarriage(i)"
+            >
+              @for (carriage of carriages; track $index) {
+                <nz-option [nzLabel]="carriage.code" [nzValue]="carriage.name"></nz-option>
+              }
+            </nz-select>
+            <button
+              [disabled]="i < 3"
+              nz-button
+              nzType="default"
+              nzShape="circle"
+              (click)="removeCarriageField(control, $event)"
+              class="remove-button"
+            >
+              <span nz-icon nzType="minus-circle-o"></span>
+            </button>
+          </nz-form-control>
+        </nz-form-item>
+      }
+    }
+    <p class="ant-form-item-explain-error">{{ carriagesLengthMessage }}</p>
+    <nz-form-item>
+      <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20 }" class="control">
+        <button nz-button nzType="primary" class="button" [disabled]="isSaveButtonDisabled">
+          <span nz-icon nzType="save"></span>Save
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</section>

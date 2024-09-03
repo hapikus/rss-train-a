@@ -30,4 +30,13 @@ export const routes: Routes = [
     title: 'Routes',
     // canActivate: [adminGuard],
   },
+  {
+    path: 'routes/:id',
+    loadComponent: () =>
+      import('./pages/routes/route-page/route-page.component').then(
+        (m) => m.RoutePageComponent,
+      ),
+    title: 'Ride',
+    // canActivate: [adminGuard],
+  },
 ];

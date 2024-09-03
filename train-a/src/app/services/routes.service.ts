@@ -1,5 +1,5 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
-import { ApiService } from './api.service';
+import { ApiService, RouteRequest, RouteResponse } from './api.service';
 
 export interface Route {
   carriages: string[];
@@ -18,6 +18,9 @@ export const nullRoute: Route = {
 })
 export class RoutesService {
   public routes: WritableSignal<Route[]> = signal([]);
+  public mode: 'update' | 'create' | 'view' = 'view';
+  public updatingRoute: Route = nullRoute;
+
   constructor(private readonly apiService: ApiService) {
     this.getRoutes();
   }
@@ -40,5 +43,15 @@ export class RoutesService {
       this.routes.set(routes);
     }
     return deleteResult;
+  }
+
+  async createRoute(newRoute: RouteRequest) {
+    const result = await this.apiService.createRoute(newRoute);
+    if (result) this.getRoutes();
+  }
+
+  async updateRoute(newRoute: RouteResponse) {
+    const result = await this.apiService.updateRoute(newRoute);
+    if (result) this.getRoutes();
   }
 }
