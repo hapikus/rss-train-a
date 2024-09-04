@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ApiService } from './api.service';
 
@@ -14,12 +14,20 @@ export class LoginService {
   private readonly apiService = inject(ApiService);
   private readonly apiUrl = '/api/signin';
   private readonly TOKEN_KEY = 'token';
+  public isLogined = false;
   public isManager = false;
+  private readonly userTypeSubject = new BehaviorSubject<string>('guest');
+  public userType$: Observable<string> = this.userTypeSubject.asObservable();
+
+  constructor() {
+    this.checkLoginStatusOnLoad();
+  }
 
   public login(email: string, password: string): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(this.apiUrl, { email, password }).pipe(
       tap((response) => {
         localStorage.setItem(this.TOKEN_KEY, response.token);
+        this.isLogined = true;
         this.updateRole();
       }),
       catchError((error: HttpErrorResponse) => {
@@ -34,6 +42,7 @@ export class LoginService {
     const logoutResult = await this.apiService.logout();
     if (logoutResult) {
       localStorage.removeItem(this.TOKEN_KEY);
+      this.userTypeSubject.next('guest');
       this.router.navigate(['/']);
     }
   }
@@ -58,10 +67,30 @@ export class LoginService {
 
   public async updateRole() {
     const profile = await this.apiService.fetchProfile();
-    this.isManager = profile.role === 'manager';
+    const userType = profile.role === 'manager' ? 'manager' : 'user';
+    this.userTypeSubject.next(userType);
   }
 
   public isAuthenticated(): boolean {
     return !!localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  public getUserType(): string {
+    if (this.isLogined) {
+      return 'user';
+    }
+    if (this.isManager) {
+      return 'manager';
+    }
+    return 'guest';
+  }
+
+  private checkLoginStatusOnLoad() {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (token) {
+      this.updateRole();
+    } else {
+      this.userTypeSubject.next('guest');
+    }
   }
 }
