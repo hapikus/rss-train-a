@@ -22,6 +22,7 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzCardModule } from 'ng-zorro-antd/card';
 import { debounceTime, mergeMap, Observable, of, take } from 'rxjs';
 
 import { MapComponent } from '../../shared/components/map/map.component';
@@ -49,6 +50,7 @@ import { FormUtilsService } from '../../services/utils/form-utils-debounce.servi
     NzAutocompleteModule,
     NzTabsModule,
     NzIconModule,
+    NzCardModule,
   ],
   templateUrl: './map-stations.component.html',
   styleUrls: ['./map-stations.component.scss'],
@@ -163,6 +165,10 @@ export class MapStationComponent {
     return this.stations.find((city) => city.city === cityName)?.id ?? 0;
   }
 
+  getNameById(cityId: number): string {
+    return this.stations.find((city) => city.id === cityId)?.city ?? '';
+  }
+
   addStation(): void {
     if (this.stationForm.valid) {
       const formValue = this.stationForm.value;
@@ -194,7 +200,6 @@ export class MapStationComponent {
     this.stationForm.get('city')?.setValue(station.city);
     this.stationForm.get('latitude')?.setValue(station.latitude);
     this.stationForm.get('longitude')?.setValue(station.longitude);
-    // this.updateRelatedStations(station.city);
     this.markerService.selectMarkerByCity(station.city, 'from', this.setFormValue.bind(this));
   }
 
