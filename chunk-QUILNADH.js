@@ -1,0 +1,1 @@
+import{Wb as i,Xb as a,qc as r,wa as o,yc as s}from"./chunk-26O7SS3C.js";var f=(()=>{let e=class e{};e.\u0275fac=function(n){return new(n||e)},e.\u0275cmp=o({type:e,selectors:[["app-not-found"]],standalone:!0,features:[s],decls:2,vars:0,template:function(n,c){n&1&&(i(0,"p"),r(1,"404 | non-existent route"),a())}});let t=e;return t})();export{f as NotFoundComponent};
