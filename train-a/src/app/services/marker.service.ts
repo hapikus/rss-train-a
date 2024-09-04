@@ -46,43 +46,15 @@ export class MarkerService {
   ) {
     const marker = this.markers[station.city];
     if (marker) {
-      const isSelectedFrom = this.selectedFromMarker && this.isMarkerSelected(station, fromCoords);
-      const isSelectedTo = this.selectedToMarker && this.isMarkerSelected(station, toCoords);
-
-      if (isSelectedFrom || isSelectedTo) {
-        if (isSelectedFrom) {
-          this.resetMarker('from', setFormValue);
-        } else if (isSelectedTo) {
-          this.resetMarker('to', setFormValue);
-        }
+      if (fromCoords && this.isMarkerSelected(station, fromCoords)) {
+        this.resetMarker('from', setFormValue);
+      } else if (toCoords && this.isMarkerSelected(station, toCoords)) {
+        this.resetMarker('to', setFormValue);
       } else {
         this.setMarker(station, marker, setFormValue);
       }
     }
   }
-
-  // public toggleSingleMarker(
-  //   station: Station,
-  //   setFormValue: (field: string, value: string | Coords) => void
-  // ) {
-  //   const marker = this.markers[station.city];
-  //   if (marker) {
-  //     // Если маркер уже выделен, сбрасываем его
-  //     if (this.selectedFromMarker === marker) {
-  //       this.resetMarker('from', setFormValue);
-  //     } else {
-  //       // Сбрасываем предыдущий выделенный маркер
-  //       if (this.selectedFromMarker) {
-  //         this.selectedFromMarker.setIcon(this.defaultIcon);
-  //       }
-  //       // Выделяем новый маркер
-  //       this.selectedFromMarker = marker;
-  //       marker.setIcon(this.selectedIcon);
-  //       setFormValue('from', station.city);
-  //       setFormValue('fromCoords', { lat: station.latitude, lon: station.longitude });
-  //     }
-  //   }
-  // }
 
   private isMarkerSelected(station: Station, coords: Coords): boolean {
     return coords && coords.lat === station.latitude && coords.lon === station.longitude;
@@ -117,20 +89,13 @@ export class MarkerService {
     clickedMarker: Marker,
     setFormValue: (field: string, value: string | Coords) => void,
   ) {
-    if (this.selectedFromMarker === clickedMarker) {
-      this.resetMarker('from', setFormValue);
-    }
-    if (this.selectedToMarker === clickedMarker) {
-      this.resetMarker('to', setFormValue);
-    }
     if (!this.selectedFromMarker) {
       this.resetMarker('from', setFormValue);
       setFormValue('from', station.city);
       setFormValue('fromCoords', { lat: station.latitude, lon: station.longitude });
       clickedMarker.setIcon(this.selectedIcon);
       this.selectedFromMarker = clickedMarker;
-    }
-    if (this.selectedFromMarker && !this.selectedToMarker) {
+    } else if (!this.selectedToMarker) {
       this.resetMarker('to', setFormValue);
       setFormValue('to', station.city);
       setFormValue('toCoords', { lat: station.latitude, lon: station.longitude });

@@ -194,7 +194,6 @@ export class MapStationComponent {
     this.stationForm.get('city')?.setValue(station.city);
     this.stationForm.get('latitude')?.setValue(station.latitude);
     this.stationForm.get('longitude')?.setValue(station.longitude);
-    // this.updateRelatedStations(station.city);
     this.markerService.selectMarkerByCity(station.city, 'from', this.setFormValue.bind(this));
   }
 

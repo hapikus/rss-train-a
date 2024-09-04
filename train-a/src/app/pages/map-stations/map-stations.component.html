@@ -38,18 +38,7 @@
     <nz-form-item>
       <nz-form-label [nzSpan]="6">Relations</nz-form-label>
       <nz-form-control [nzSpan]="14">
-        <!-- <div formArrayName="relations">
-          <div *ngFor="let relation of relations.controls; let i = index" [formGroupName]="i">
-            <nz-input-group [nzSuffix]="suffixButton">
-              <input nz-input formControlName="cityName" placeholder="Enter related city" />
-              <ng-template #suffixButton>
-                <button nz-button nzType="text" (click)="removeRelation(i)">
-                  <i nz-icon nzType="delete" nzTheme="outline"></i>
-                </button>
-              </ng-template>
-            </nz-input-group>
-          </div>
-        </div> -->
+
         <div formArrayName="relations">
           <div *ngFor="let relation of relations.controls; let i = index" [formGroupName]="i">
         <nz-input-group [nzSuffix]="suffixButton">
