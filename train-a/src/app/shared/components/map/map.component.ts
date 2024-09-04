@@ -34,15 +34,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  // private initMap(): void {
-  //   if (!this.map) {
-  //   this.map = L.map('map').setView([43.068661, 141.350755], 4);
-  //   L.tileLayer(this.mapTitleLayer, {
-  //     attribution: this.mapAttribution,
-  //   }).addTo(this.map);
-  // }
-  // }
-
   private initMap(): void {
     const mapContainer = this.mapElement.nativeElement;
     if (mapContainer && !this.map) {
