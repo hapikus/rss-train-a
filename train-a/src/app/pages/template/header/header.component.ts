@@ -32,9 +32,9 @@ export class HeaderComponent {
 
   constructor(private breakpointObserver: BreakpointObserver) {
     const CUSTOM_BREAKPOINTS = [
-      '(max-width: 600px)', // мобильные устройства
-      '(min-width: 601px) and (max-width: 900px)', // планшеты
-      '(min-width: 901px)', // десктопы
+      '(max-width: 600px)',
+      '(min-width: 601px) and (max-width: 900px)',
+      '(min-width: 901px)',
     ];
 
     const customHandset$ = this.breakpointObserver.observe(CUSTOM_BREAKPOINTS[0]);

@@ -80,12 +80,44 @@
 
 </div>
 <div class="stations-list">
-  <ul>
-    <li *ngFor="let station of stations">
-      {{ station.city }}
-      <button nz-button nzType="default" (click)="deleteStation(station.id)">
-        Delete
-      </button>
-    </li>
-  </ul>
+    <div *ngFor="let station of stations">
+      <nz-card nzHoverable style="width:100%; height: 100%;">
+        <div>
+          <div class="title-controller">
+            <p>{{station.city}}</p>
+            <button nz-button nzType="text" (click)="deleteStation(station.id)">
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </button>
+          </div>
+          <p>Latitude: {{station.latitude}}</p>
+          <p>Longitude: {{station.longitude}}</p>
+          @if(station.connectedTo.length > 0){
+            <h4>Connected To:</h4>
+            <ul class="ul-line">
+              <li *ngFor="let connection of station.connectedTo">
+                {{ getNameById(connection.id) }}
+              </li>
+            </ul>
+          }
+        </div>
+      </nz-card>
+      <ng-template #coverTemplate>
+        <div class="title-controller">
+          <h3>{{station.city}}</h3>
+          <button nz-button nzType="text" (click)="deleteStation(station.id)">
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+          </button>
+        </div>
+        <p>Latitude: {{station.latitude}}</p>
+        <p>Longitude: {{station.longitude}}</p>
+        @if(station.connectedTo.length > 0){
+          <h4>Connected To:</h4>
+          <ul>
+            <li *ngFor="let connection of station.connectedTo">
+              City: {{ getNameById(connection.id) }}
+            </li>
+          </ul>
+        }
+      </ng-template>
+    </div>
 </div>

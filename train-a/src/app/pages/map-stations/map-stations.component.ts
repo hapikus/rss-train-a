@@ -22,6 +22,7 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzCardModule } from 'ng-zorro-antd/card';
 import { debounceTime, mergeMap, Observable, of, take } from 'rxjs';
 
 import { MapComponent } from '../../shared/components/map/map.component';
@@ -49,6 +50,7 @@ import { FormUtilsService } from '../../services/utils/form-utils-debounce.servi
     NzAutocompleteModule,
     NzTabsModule,
     NzIconModule,
+    NzCardModule,
   ],
   templateUrl: './map-stations.component.html',
   styleUrls: ['./map-stations.component.scss'],
@@ -161,6 +163,10 @@ export class MapStationComponent {
 
   getIdByName(cityName: string): number {
     return this.stations.find((city) => city.city === cityName)?.id ?? 0;
+  }
+
+  getNameById(cityId: number): string {
+    return this.stations.find((city) => city.id === cityId)?.city ?? '';
   }
 
   addStation(): void {
