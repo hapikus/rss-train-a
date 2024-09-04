@@ -1,1 +1,71 @@
-<p>header works!</p>
+<div class="burger" *ngIf="isMobile; else desktopMenu">
+  <button nz-button nzType="text" nzSize="large" (click)="open()">
+    <span nz-icon nzType="menu" nzTheme="outline"></span>
+  </button>
+  <nz-drawer
+  [nzVisible]="visible"
+  nzPlacement="left"
+  (nzOnClose)="close()"
+>
+  <ng-container *nzDrawerContent>
+    <ul nz-menu nzMode="inline">
+      <li nz-menu-item>
+        <a routerLink="/">Home</a>
+      </li>
+      <ng-container *ngIf="userType === 'user' || userType === 'manager'">
+        <li nz-menu-item>
+          <a routerLink="/profile">Profile</a>
+        </li>
+        <li nz-menu-item>
+          <a routerLink="/orders">My Orders</a>
+        </li>
+      </ng-container>
+      <ng-container *ngIf="userType === 'manager'">
+        <li nz-menu-item>
+          <a routerLink="/admin">Admin</a>
+        </li>
+      </ng-container>
+      <ng-container *ngIf="userType === 'guest'">
+        <li nz-menu-item>
+          <a routerLink="/signin">Sign In</a>
+        </li>
+        <li nz-menu-item>
+          <a routerLink="/signup">Sign Up</a>
+        </li>
+      </ng-container>
+    </ul>
+  </ng-container>
+</nz-drawer>
+</div>
+
+<ng-template #desktopMenu>
+  <ul nz-menu nzMode="horizontal">
+    <li nz-menu-item>
+      <a routerLink="/">Home</a>
+    </li>
+    <ng-container *ngIf="userType === 'user' || userType === 'manager'">
+      <li nz-menu-item>
+        <a routerLink="/profile">Profile</a>
+      </li>
+      <li nz-menu-item>
+        <a routerLink="/orders">My Orders</a>
+      </li>
+    </ng-container>
+    <ng-container *ngIf="userType === 'manager'">
+      <li nz-menu-item>
+        <a routerLink="/admin">Admin</a>
+      </li>
+    </ng-container>
+    <ng-container *ngIf="userType === 'guest'">
+      <li nz-menu-item>
+        <a routerLink="/signin">Sign In</a>
+      </li>
+      <li nz-menu-item>
+        <a routerLink="/signup">Sign Up</a>
+      </li>
+      <li nz-menu-item>
+        <a routerLink="/stations">ST</a>
+      </li>
+    </ng-container>
+  </ul>
+</ng-template>

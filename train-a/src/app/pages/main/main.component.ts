@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {
@@ -63,6 +63,8 @@ import { RouteTabsComponent } from '../../shared/components/route-tabs/route-tab
   providers: [DatePipe],
 })
 export class MainComponent {
+  @ViewChild(MapComponent) mapComponent!: MapComponent;
+
 
   public searchForm: FormGroup = this.fb.group({
     from: ['', Validators.required],
