@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
@@ -11,7 +11,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { Order } from '../../types/interfaces';
 import { OrderService } from '../../services/order.service';
 import { mockOrders } from '../../shared/utilities/mock-orders';
-import { RideStatus } from '../../types/types';
+// import { RideStatus } from '../../types/types';
 
 @Component({
   selector: 'app-order-list',
@@ -30,59 +30,23 @@ import { RideStatus } from '../../types/types';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderListComponent implements OnInit {
-  // public orders: Order[] = [];
+  public orders: Order[] = mockOrders;
   public errorMessage = '';
 
   constructor(
     private orderService: OrderService,
     private message: NzMessageService,
     private modal: NzModalService,
-  ) {
-    // const ref: NzModalRef = modal.info();
-    // ref.close();
-  }
-
-  // ngOnInit(): void {
-  //   this.fetchOrders();
-  // }
-
-  private fetchOrders(): void {
-    this.orderService.getOrders(true).subscribe({
-      next: (orders) => console.log('orders', orders),
-    });
-  }
-
-  // public orders = mockOrders;
-  // public pageIndex = 1;
-  // public pageSize = 5;
-  // public totalOrders = this.orders.length;
-  // public paginatedOrders = this.orders.slice(0, this.pageSize);
-  orders: Order[] = mockOrders;
-  sortedOrders!: Order[];
-
-  // get sortedOrders() {
-  //   return this.orders.sort(
-  //     (a, b) =>
-  //       new Date(this.getTripStartTime(a)).getTime()
-  // - new Date(this.getTripStartTime(b)).getTime(),
-  //   );
-  // }
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
-    // this.updatePagination();
-    // this.fetchOrders();
-    this.sortedOrders = this.orders.sort(
-      (a, b) =>
-        new Date(a.schedule.segments[0].departure).getTime() -
-        new Date(b.schedule.segments[0].departure).getTime(),
-    );
+    this.orders.sort((a, b) => {
+      const departureA = new Date(a.schedule.segments[0].departure).getTime();
+      const departureB = new Date(b.schedule.segments[0].departure).getTime();
+      return departureA - departureB;
+    });
   }
-
-  // updatePagination(): void {
-  //   const startIndex = (this.pageIndex - 1) * this.pageSize;
-  //   const endIndex = startIndex + this.pageSize;
-  //   this.paginatedOrders = this.sortedOrders.slice(startIndex, endIndex);
-  // }
 
   public getCarriageType(order: Order): string {
     const lastSegmentIndex = order.schedule.segments.length - 1;
@@ -91,15 +55,6 @@ export class OrderListComponent implements OnInit {
 
   public getTotalPrice(order: Order): number {
     return order.carriages.reduce((total, carriage) => total + (order.price[carriage] || 0), 0);
-  }
-
-  private getTripStartTime(order: Order): string {
-    return order.schedule.segments[0].departure;
-  }
-
-  private getTripEndTime(order: Order): string {
-    const lastSegment = order.schedule.segments[order.schedule.segments.length - 1];
-    return lastSegment.arrival;
   }
 
   public getTripDuration(order: Order): string {
@@ -113,26 +68,16 @@ export class OrderListComponent implements OnInit {
     return `${hours}h ${minutes}m`;
   }
 
-  getStationName(stationId: number): string {
-    const stations: { [key: string]: string } = {
-      33: 'Station A',
-      5: 'Station B',
-      62: 'Station C',
-      11: 'Station D',
-      48: 'Station E',
-    };
-    return stations[stationId] || 'Unknown Station';
-  }
-
   public onCancelOrder(order: Order): void {
     this.modal.confirm({
       nzTitle: 'Are you sure you want to cancel this order?',
       nzOnOk: () => {
         try {
-          const updatedOrder: Order = { ...order, status: 'canceled' as RideStatus };
-
-          this.sortedOrders = this.sortedOrders.map((o) => (o.id === order.id ? updatedOrder : o));
-
+          const trip = this.orders.find((o) => o.id === order.id);
+          if (trip) {
+            trip.status = 'canceled';
+            this.cdr.detectChanges();
+          }
           this.message.success('Order successfully cancelled');
         } catch (error) {
           this.message.error('Error while cancelling the order');
