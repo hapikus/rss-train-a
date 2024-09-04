@@ -1,0 +1,20 @@
+.routes {
+  display: flex;
+  column-gap: 2rem;
+  row-gap: 4rem;
+  flex-wrap: wrap;
+  max-width: 1440px;
+  margin: 0 auto;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.heading {
+  margin: 1rem auto;
+  text-align: center;
+}
+
+.pagination {
+  margin-top: 4rem;
+  text-align: center;
+}
