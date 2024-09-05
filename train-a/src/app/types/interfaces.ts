@@ -5,6 +5,7 @@ export interface Order {
   rideId: number;
   routeId: number;
   seatId: number;
+  carId: number;
   userId: number;
   status: RideStatus;
   path: number[];

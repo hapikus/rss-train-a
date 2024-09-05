@@ -1,21 +1,15 @@
 <div class="orders-list">
-  @for (order of sortedOrders; track $index) {
+  @for (order of orders; track $index) {
     <nz-card nzHoverable [nzBodyStyle]="{ padding: '0px' }" class="order-card">
       <div class="order-header">
         <p><strong>Carriage type:</strong> {{ getCarriageType(order) }}</p>
         <p><strong>Price:</strong> {{ getTotalPrice(order) | currency }}</p>
-        <p><strong>Car number:</strong></p>
+        <p><strong>Car number:</strong> {{ order.carId }}</p>
         <p><strong>Seat number:</strong> {{ order.seatId }}</p>
+        <nz-divider></nz-divider>
+        <p><strong>Status:</strong> {{ order.status }}</p>
       </div>
-
       <nz-divider></nz-divider>
-
-      <!-- <div class="trip-details">
-        <p><strong>Start station:</strong> Station {{ order.path[0] }}</p>
-        <p><strong>End station:</strong> Station {{ order.path[order.path.length - 1] }}</p>
-        <p><strong>Seat number:</strong> {{ order.seatId }}</p>
-        <p><strong>Trip duration:</strong> {{ getTripDuration(order) }}</p>
-      </div> -->
       <nz-steps [nzCurrent]="3" nzSize="small">
         <nz-step [nzTitle]="nzFrom" [nzIcon]="custom1"></nz-step>
         <nz-step [nzTitle]="nzDur" [nzIcon]="custom1"></nz-step>
