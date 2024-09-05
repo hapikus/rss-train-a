@@ -1,0 +1,27 @@
+<form nz-form [nzLayout]="'inline'" [formGroup]="form" (ngSubmit)="submit()">
+  <nz-form-item class="item">
+    <nz-form-label class="label">{{label}}</nz-form-label>
+    <nz-form-control>
+      <nz-input-number
+        class="input"
+        [nzBorderless]="form.controls[controlName].disabled"
+        [formControlName]="controlName"
+        [nzFormatter]="formatterDollar"
+        [nzParser]="parserDollar"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      @if (form.controls[controlName].disabled) {
+        <button nz-button nzType="text" (click)="enableInput()">
+          <span nz-icon nzType="edit"></span>
+        </button>
+      } @else {
+        <button nz-button nzType="text" (click)="submit()">
+          <span nz-icon nzType="enter"></span>
+        </button>
+      }
+    </nz-form-control>
+  </nz-form-item>
+</form>

@@ -13,7 +13,6 @@ export const routes: Routes = [
   {
     path: '',
     component: MainComponent,
-
   },
   {
     path: 'stations',
@@ -33,19 +32,13 @@ export const routes: Routes = [
   },
   {
     path: 'routes',
-    loadComponent: () =>
-      import('./pages/routes/routes.component').then(
-        (m) => m.RoutesComponent,
-      ),
+    loadComponent: () => import('./pages/routes/routes.component').then((m) => m.RoutesComponent),
     title: 'Routes',
     canActivate: [adminGuard],
   },
   {
     path: 'routes/:id',
-    loadComponent: () =>
-      import('./pages/routes/route-page/route-page.component').then(
-        (m) => m.RoutePageComponent,
-      ),
+    loadComponent: () => import('./pages/ride/route.component').then((m) => m.RouteComponent),
     title: 'Ride',
     canActivate: [adminGuard],
   },

@@ -1,0 +1,32 @@
+@if (rideService.mode === 'edit') {
+  <div class="header">
+    <a nz-button nzType="link" routerLink="/routes"
+      ><span nz-icon nzType="arrow-left" nzTheme="outline"></span
+    ></a>
+    <h4 class="heading" nz-typography>{{ routeName }}</h4>
+    <button nz-button (click)="create()" nzType="default" nzShape="circle">
+      <span nz-icon nzType="plus"></span>
+    </button>
+  </div>
+}
+@if (schedules().length === 0) {
+  <nz-spin nzTip="Loading..." [nzSpinning]="true">
+    <nz-empty nzNotFoundImage="simple"></nz-empty>
+  </nz-spin>
+} @else {
+  @if (rideService.mode === 'edit') {
+    @for (schedule of schedules(); track $index) {
+      <app-ride [id]="id" [rideId]="schedule.rideId" />
+    }
+  } @else {
+    <app-ride [id]="id" [rideId]="newRideId" />
+    <div class="footer">
+      <button nz-button (click)="delete()" nzType="primary">
+        Cancel
+      </button>
+      <button nz-button (click)="back()" nzType="primary">
+        Submit
+      </button>
+    </div>
+  }
+}

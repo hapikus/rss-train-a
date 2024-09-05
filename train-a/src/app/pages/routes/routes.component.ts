@@ -14,9 +14,9 @@ import { StationsFormComponent } from './stations-form/station-form.component';
   imports: [
     NzButtonModule,
     NzEmptyModule,
+    NzSpinModule,
     NzIconModule,
     NzPaginationModule,
-    NzSpinModule,
     RouteCardComponent,
     StationsFormComponent,
   ],

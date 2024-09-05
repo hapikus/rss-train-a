@@ -38,6 +38,34 @@ export interface CarriageResponse {
   rightSeats: number;
 }
 
+export interface Price {
+  [key: string]: number;
+}
+
+export interface Segment {
+  time: [string, string];
+  price: Price;
+}
+
+export interface Schedule {
+  rideId: number;
+  segments: Segment[];
+}
+
+export interface Ride {
+  id: number;
+  path: number[];
+  carriages: string[];
+  schedule: Schedule[];
+}
+
+export const nullRide: Ride = {
+  id: NaN,
+  path: [],
+  carriages: [],
+  schedule: [],
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -230,6 +258,81 @@ export class ApiService {
       throw new Error(getErrorMessageByResponseStatus(response.status));
     } catch (error) {
       console.error('update password', error);
+      return false;
+    }
+  }
+
+  public async fetchRide(id: number): Promise<Ride> {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (!token) return nullRide;
+    try {
+      const response = await fetch(`${this.apiRoutesUrl}/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const ride: Ride = await response.json();
+        return ride;
+      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
+    } catch (error) {
+      console.error('fetch ride', error);
+      return nullRide;
+    }
+  }
+
+  public async createRide(routeId: number, segments: Segment[]): Promise<{ id: number }> {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (!token) return { id: 0 };
+    try {
+      const response = await fetch(`${this.apiRoutesUrl}/${routeId}/ride`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ segments }),
+      });
+      if (response.ok) {
+        const rideId: { id: number } = await response.json();
+        return rideId;
+      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
+    } catch (error) {
+      console.error('create ride', error);
+      return { id: 0 };
+    }
+  }
+
+  public async updateRide(routeId: number, rideId: number, segments: Segment[]): Promise<boolean> {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (!token) return false;
+    try {
+      const response = await fetch(`${this.apiRoutesUrl}/${routeId}/ride/${rideId}`, {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ segments }),
+      });
+      if (response.ok) {
+        return true;
+      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
+    } catch (error) {
+      console.error('update ride', error);
+      return false;
+    }
+  }
+
+  public async deleteRide(routeId: number, rideId: number): Promise<boolean> {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (!token) return false;
+    try {
+      const response = await fetch(`${this.apiRoutesUrl}/${routeId}/ride/${rideId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        return true;
+      }
+      throw new Error(getErrorMessageByResponseStatus(response.status));
+    } catch (error) {
+      console.error('delete ride', error);
       return false;
     }
   }
