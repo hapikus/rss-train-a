@@ -18,7 +18,7 @@ export const routes: Routes = [
   {
     path: 'stations',
     component: MapStationComponent,
-    title: 'Stations',
+    canActivate: [adminGuard],
   },
   {
     path: 'signup',
@@ -28,6 +28,7 @@ export const routes: Routes = [
   {
     path: 'signin',
     component: LoginPageComponent,
+    title: 'Sign-In Page',
     canActivate: [authGuard],
   },
   {

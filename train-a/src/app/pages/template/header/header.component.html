@@ -2,40 +2,42 @@
   <button nz-button nzType="text" nzSize="large" (click)="open()">
     <span nz-icon nzType="menu" nzTheme="outline"></span>
   </button>
-  <nz-drawer
-  [nzVisible]="visible"
-  nzPlacement="left"
-  (nzOnClose)="close()"
->
-  <ng-container *nzDrawerContent>
-    <ul nz-menu nzMode="inline">
-      <li nz-menu-item>
-        <a routerLink="/">Home</a>
-      </li>
-      <ng-container *ngIf="userType === 'user' || userType === 'manager'">
+  <nz-drawer [nzVisible]="visible" nzPlacement="left" (nzOnClose)="close()">
+    <ng-container *nzDrawerContent>
+      <ul nz-menu nzMode="inline">
         <li nz-menu-item>
-          <a routerLink="/profile">Profile</a>
+          <a routerLink="/">Home</a>
         </li>
-        <li nz-menu-item>
-          <a routerLink="/orders">My Orders</a>
-        </li>
-      </ng-container>
-      <ng-container *ngIf="userType === 'manager'">
-        <li nz-menu-item>
-          <a routerLink="/admin">Admin</a>
-        </li>
-      </ng-container>
-      <ng-container *ngIf="userType === 'guest'">
-        <li nz-menu-item>
-          <a routerLink="/signin">Sign In</a>
-        </li>
-        <li nz-menu-item>
-          <a routerLink="/signup">Sign Up</a>
-        </li>
-      </ng-container>
-    </ul>
-  </ng-container>
-</nz-drawer>
+        <ng-container *ngIf="role() === 'user' || role() === 'manager'">
+          <li nz-menu-item>
+            <a routerLink="/profile">Profile</a>
+          </li>
+          <li nz-menu-item>
+            <a routerLink="/orders">My Orders</a>
+          </li>
+        </ng-container>
+        <ng-container *ngIf="role() === 'manager'">
+          <li nz-menu-item>
+            <a routerLink="/routes">Routes</a>
+          </li>
+          <li nz-menu-item>
+            <a routerLink="/stations">Stations</a>
+          </li>
+          <li nz-menu-item>
+            <a routerLink="/carriages">Carriages</a>
+          </li>
+        </ng-container>
+        <ng-container>
+          <li nz-menu-item>
+            <a routerLink="/signin">Sign In</a>
+          </li>
+          <li nz-menu-item>
+            <a routerLink="/signup">Sign Up</a>
+          </li>
+        </ng-container>
+      </ul>
+    </ng-container>
+  </nz-drawer>
 </div>
 
 <ng-template #desktopMenu>
@@ -43,28 +45,34 @@
     <li nz-menu-item>
       <a routerLink="/">Home</a>
     </li>
-    <ng-container *ngIf="userType === 'user' || userType === 'manager'">
+    <ng-container *ngIf="role() === 'user' || role() === 'manager'">
       <li nz-menu-item>
         <a routerLink="/profile">Profile</a>
       </li>
       <li nz-menu-item>
         <a routerLink="/orders">My Orders</a>
       </li>
+      <button nz-button nzDanger [nzType]="'primary'" (click)="logout()">
+        Log out
+      </button>
     </ng-container>
-    <ng-container *ngIf="userType === 'manager'">
+    <ng-container *ngIf="role() === 'manager'">
       <li nz-menu-item>
-        <a routerLink="/admin">Admin</a>
+        <a routerLink="/routes">Routes</a>
+      </li>
+      <li nz-menu-item>
+        <a routerLink="/stations">Stations</a>
+      </li>
+      <li nz-menu-item>
+        <a routerLink="/carriages">Carriages</a>
       </li>
     </ng-container>
-    <ng-container *ngIf="userType === 'guest'">
+    <ng-container>
       <li nz-menu-item>
         <a routerLink="/signin">Sign In</a>
       </li>
       <li nz-menu-item>
         <a routerLink="/signup">Sign Up</a>
-      </li>
-      <li nz-menu-item>
-        <a routerLink="/stations">ST</a>
       </li>
     </ng-container>
   </ul>

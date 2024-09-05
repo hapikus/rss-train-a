@@ -1,9 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { ApiService } from './api.service';
+import { ApiService, Profile } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +14,10 @@ export class LoginService {
   private readonly apiService = inject(ApiService);
   private readonly apiUrl = '/api/signin';
   private readonly TOKEN_KEY = 'token';
+
+  private roleSubject = new BehaviorSubject<string>('guest');
+  public role$ = this.roleSubject.asObservable();
+
   public isManager = false;
 
   public login(email: string, password: string): Observable<{ token: string }> {
@@ -24,7 +28,6 @@ export class LoginService {
       }),
       catchError((error: HttpErrorResponse) => {
         const errorMessage = this.getErrorMessage(error);
-
         return throwError(() => new Error(errorMessage));
       }),
     );
@@ -34,8 +37,26 @@ export class LoginService {
     const logoutResult = await this.apiService.logout();
     if (logoutResult) {
       localStorage.removeItem(this.TOKEN_KEY);
+      this.roleSubject.next('guest');
       this.router.navigate(['/']);
     }
+  }
+
+  public async updateRole() {
+    const profile = await this.apiService.fetchProfile();
+    const { role } = profile;
+    this.isManager = role === 'manager';
+    this.roleSubject.next(role);
+  }
+
+  public async getProfile(): Promise<Profile> {
+    const profile = await this.apiService.fetchProfile();
+    this.isManager = profile.role === 'manager';
+    return profile;
+  }
+
+  public isAuthenticated(): boolean {
+    return !!localStorage.getItem(this.TOKEN_KEY);
   }
 
   private getErrorMessage(error: HttpErrorResponse): string {
@@ -54,14 +75,5 @@ export class LoginService {
       }
     }
     return 'An unknown error occurred!';
-  }
-
-  public async updateRole() {
-    const profile = await this.apiService.fetchProfile();
-    this.isManager = profile.role === 'manager';
-  }
-
-  public isAuthenticated(): boolean {
-    return !!localStorage.getItem(this.TOKEN_KEY);
   }
 }
