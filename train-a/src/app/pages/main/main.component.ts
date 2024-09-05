@@ -65,7 +65,6 @@ import { RouteTabsComponent } from '../../shared/components/route-tabs/route-tab
 export class MainComponent {
   @ViewChild(MapComponent) mapComponent!: MapComponent;
 
-
   public searchForm: FormGroup = this.fb.group({
     from: ['', Validators.required],
     to: ['', [Validators.required, this.notSameAsStart.bind(this)]],
