@@ -1,0 +1,27 @@
+<section class="ride">
+  <nz-divider nzOrientation="left" [nzText]="'Ride ' + rideId"></nz-divider>
+  @if (rideService.mode === 'edit') {
+    <button
+    class="delete"
+    nz-button
+    nzType="default"
+    nzShape="circle"
+    nz-popconfirm
+    nzPopconfirmTitle="Are you sure delete this ride?"
+    nzPopconfirmPlacement="bottom"
+    (nzOnConfirm)="delete()"
+  >
+    <span nz-icon nzType="delete"></span>
+  </button>
+  }
+  @for (path of paths(); track path; let i = $index) {
+    <app-item
+      [id]="id"
+      [rideId]="rideId"
+      [segment]="isEnd(i) ? i - 1 : i"
+      [departure]="!isEnd(i)"
+      [arrival]="i > 0"
+      [isEnd]="isEnd(i)"
+    />
+  }
+</section>

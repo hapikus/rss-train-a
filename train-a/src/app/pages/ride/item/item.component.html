@@ -1,0 +1,22 @@
+<div class="item">
+  <p class="city">{{ rideService.getStationNameById(rideService.ride().path[segment]) }}</p>
+  <div class="timeItem">
+    @if (arrival) {
+      <app-date-form [label]="'Arrival'" [code]="{id, rideId, segment}" [value]="arrivalDate()"/>
+    }
+    @if (departure) {
+      <app-date-form [label]="'Departure'" [code]="{id, rideId, segment}" [value]="departureDate()"/>
+    }
+  </div>
+  <div class="pricesItem">
+    @if (!isEnd) {
+      @for (price of prices(); track $index) {
+        <app-price-form
+        [label]="price[0]"
+        [value]="price[1]"
+        [code]="{id, rideId, segment}"
+      />
+      }
+    }
+  </div>
+</div>

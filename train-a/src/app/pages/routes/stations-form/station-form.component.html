@@ -72,14 +72,6 @@
       }
     }
     <p class="ant-form-item-explain-error">{{ stationsLengthMessage }}</p>
-    <!-- <nz-form-item>
-    <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 20 }">
-      <p class="ant-form-item-explain-error">{{ stationsLengthMessage }}</p>
-      <button nz-button nzType="primary" class="button" [disabled]="isSaveButtonDisabled">
-        <span nz-icon nzType="save"></span>Save
-      </button>
-    </nz-form-control>
-  </nz-form-item> -->
   </form>
   <form nz-form [formGroup]="carriagesSubform" (ngSubmit)="submitForm()">
     <nz-form-label [nzXs]="24" [nzSm]="4" class="label"> Carriages </nz-form-label>
