@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
@@ -8,7 +8,6 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { combineLatest, map } from 'rxjs';
-import { LoginService } from '../../../services/login.service';
 
 @Component({
   selector: 'app-header',
@@ -17,8 +16,8 @@ import { LoginService } from '../../../services/login.service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
-  @Input() userType!: string;
+export class HeaderComponent {
+  @Input() userType: string = 'guest';
   isMobile: boolean = false;
   isDesktop: boolean = false;
   visible = false;
@@ -31,10 +30,7 @@ export class HeaderComponent implements OnInit {
     this.visible = false;
   }
 
-  constructor(
-    private breakpointObserver: BreakpointObserver,
-    private loginService: LoginService,
-  ) {
+  constructor(private breakpointObserver: BreakpointObserver) {
     const CUSTOM_BREAKPOINTS = [
       '(max-width: 600px)',
       '(min-width: 601px) and (max-width: 900px)',
@@ -48,19 +44,13 @@ export class HeaderComponent implements OnInit {
     combineLatest([customHandset$, customTablet$, customWeb$])
       .pipe(
         map(([handset, web]) => ({
-          isMobile: handset.matches,
-          isDesktop: web.matches,
-        })),
+            isMobile: handset.matches,
+            isDesktop: web.matches,
+          })),
       )
       .subscribe(({ isMobile, isDesktop }) => {
         this.isMobile = isMobile;
         this.isDesktop = isDesktop;
       });
-  }
-
-  ngOnInit() {
-    this.loginService.userType$.subscribe((userType) => {
-      this.userType = userType;
-    });
-  }
+    }
 }
