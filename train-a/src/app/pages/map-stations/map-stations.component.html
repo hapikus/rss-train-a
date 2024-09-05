@@ -1,0 +1,123 @@
+<div class="station-form">
+  <form [formGroup]="stationForm" (ngSubmit)="addStation()" class="ant-advanced-station-form">
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="city">City</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <nz-input-group>
+          <input
+            nz-input
+            id="city"
+            formControlName="city"
+            placeholder="Enter city name"
+            [nzAutocomplete]="auto"
+          />
+          <nz-autocomplete #auto>
+            <nz-auto-option *ngFor="let option of cityOptions$ | async" [nzValue]="option.name">
+              {{ option.name }}
+            </nz-auto-option>
+          </nz-autocomplete>
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="latitude">Latitude</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input id="latitude" formControlName="latitude" placeholder="Latitude" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="longitude">Longitude</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input id="longitude" formControlName="longitude" placeholder="Longitude" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Relations</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+
+        <div formArrayName="relations">
+          <div *ngFor="let relation of relations.controls; let i = index" [formGroupName]="i">
+        <nz-input-group [nzSuffix]="suffixButton">
+          <input
+            nz-input
+            formControlName="cityName"
+            placeholder="Enter related city"
+            [nzAutocomplete]="auto"
+          />
+          <nz-autocomplete #auto>
+            <nz-auto-option *ngFor="let station of stations" [nzValue]="station.city">
+              {{ station.city }}
+            </nz-auto-option>
+          </nz-autocomplete>
+          <ng-template #suffixButton>
+            <button nz-button nzType="text" (click)="removeRelation(i)">
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </button>
+          </ng-template>
+        </nz-input-group>
+      </div>
+      </div>
+        <button nz-button nzType="dashed" type="button" class="add-relation" (click)="addRelation()">
+          <i nz-icon nzType="plus"></i> Add Relation
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button nz-button nzType="primary" [disabled]="stationForm.invalid">Add Station</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+
+  <div class="map-cont">
+    <app-map (markerClicked)="onMarkerClick($event)"></app-map>
+  </div>
+
+</div>
+<div class="stations-list">
+    <div *ngFor="let station of stations">
+      <nz-card nzHoverable style="width:100%; height: 100%;">
+        <div>
+          <div class="title-controller">
+            <p>{{station.city}}</p>
+            <button nz-button nzType="text" (click)="deleteStation(station.id)">
+              <i nz-icon nzType="delete" nzTheme="outline"></i>
+            </button>
+          </div>
+          <p>Latitude: {{station.latitude}}</p>
+          <p>Longitude: {{station.longitude}}</p>
+          @if(station.connectedTo.length > 0){
+            <h4>Connected To:</h4>
+            <ul class="ul-line">
+              <li *ngFor="let connection of station.connectedTo">
+                {{ getNameById(connection.id) }}
+              </li>
+            </ul>
+          }
+        </div>
+      </nz-card>
+      <ng-template #coverTemplate>
+        <div class="title-controller">
+          <h3>{{station.city}}</h3>
+          <button nz-button nzType="text" (click)="deleteStation(station.id)">
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+          </button>
+        </div>
+        <p>Latitude: {{station.latitude}}</p>
+        <p>Longitude: {{station.longitude}}</p>
+        @if(station.connectedTo.length > 0){
+          <h4>Connected To:</h4>
+          <ul>
+            <li *ngFor="let connection of station.connectedTo">
+              City: {{ getNameById(connection.id) }}
+            </li>
+          </ul>
+        }
+      </ng-template>
+    </div>
+</div>

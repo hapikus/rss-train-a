@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Injectable, signal } from '@angular/core';
 import getErrorMessageByResponseStatus from '../shared/utilities/getErrorMessageByResponseStatus';
 

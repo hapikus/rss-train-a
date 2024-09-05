@@ -1,0 +1,34 @@
+.carriage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.left-seats,
+.right-seats {
+  display: flex;
+}
+
+.seat {
+  width: 30px;
+  height: 30px;
+  background-color: lightgray;
+  border: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px;
+}
+
+.aisle {
+  width: 50px;
+  text-align: center;
+  line-height: 30px;
+  margin: 0 10px;
+}
